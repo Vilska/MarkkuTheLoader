@@ -14,7 +14,8 @@ project "Sandbox"
     includedirs
     {
         "../Core/vendor/spdlog/include",
-        "../Core/src"
+        "../Core/src",
+        "../Core/vendor/glad/include"
     }
 
     links

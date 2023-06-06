@@ -16,20 +16,19 @@ namespace Core {
 		{
 			// Initialize log
 			Log::Init();
-			LOG_TRACE("Trace");
-			LOG_INFO("Info");
-			LOG_WARN("Warn");
-			LOG_ERROR("Error");
+			LOG_INFO("Application initialized!");
 		}
 
 		s_Instance = this;
+
+		m_Window = Window::Create({"Testi", 1280, 720});
 	}
 
 	void Application::Run()
 	{
 		while (m_Running)
 		{
-			m_Running = false;
+			m_Window->Update();
 		}
 	}
 

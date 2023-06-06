@@ -14,11 +14,33 @@ project "Core"
         "src/**.cpp"
     }
 
+    defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
+	}
+
     includedirs
     {
         "src",
-        "vendor/spdlog/include"
+        "vendor/spdlog/include",
+        "vendor/glfw/include",
+        "vendor/glad/include"
     }
+
+    links
+    {
+        "glfw",
+        "glad",
+        "opengl32.lib"
+    }
+
+    filter "system:windows"
+		systemversion "latest"
+
+		defines
+		{
+			"GLFW_INCLUDE_NONE"
+		}
 
     filter "configurations:Debug"
         runtime "Debug"

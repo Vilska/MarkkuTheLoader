@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Window.h"
+
 namespace Core {
 
 	//struct ApplicationProperties
@@ -13,11 +15,12 @@ namespace Core {
 	{
 	public:
 		Application();
-		virtual ~Application() = default;
 
 		void Run();
 	private:
 		bool m_Running = true;
+
+		std::unique_ptr<Window> m_Window;
 
 		static Application* s_Instance;
 	};

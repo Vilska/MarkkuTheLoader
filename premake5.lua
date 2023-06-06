@@ -10,7 +10,10 @@ workspace "Markku"
 
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-    IncludeDir = {}
+    group "Dependencies"
+        include "Core/vendor/glfw"
+        include "Core/vendor/glad"
+    group ""
 
     include "Core"
     include "Sandbox"
