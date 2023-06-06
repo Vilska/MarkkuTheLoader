@@ -13,6 +13,7 @@ project "Sandbox"
 
     includedirs
     {
+        "../Core/vendor/spdlog/include",
         "../Core/src"
     }
 

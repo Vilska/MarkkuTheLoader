@@ -10,7 +10,7 @@ public:
 	App()
 		: Application()
 	{
-
+		LOG_INFO("App is constructed!");
 	}
 };
 

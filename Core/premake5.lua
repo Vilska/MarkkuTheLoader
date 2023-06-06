@@ -14,6 +14,12 @@ project "Core"
         "src/**.cpp"
     }
 
+    includedirs
+    {
+        "src",
+        "vendor/spdlog/include"
+    }
+
     filter "configurations:Debug"
         runtime "Debug"
         symbols "on"

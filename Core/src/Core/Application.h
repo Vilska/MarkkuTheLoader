@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../cpch.h"
-
 namespace Core {
 
 	//struct ApplicationProperties

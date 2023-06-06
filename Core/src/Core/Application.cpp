@@ -1,4 +1,7 @@
+#include "cpch.h"
 #include "Application.h"
+
+#include "Log.h"
 
 namespace Core {
 
@@ -11,7 +14,12 @@ namespace Core {
 		// Handle application initialization
 		if (!s_Instance)
 		{
-			std::cout << "Application initialized!\n";
+			// Initialize log
+			Log::Init();
+			LOG_TRACE("Trace");
+			LOG_INFO("Info");
+			LOG_WARN("Warn");
+			LOG_ERROR("Error");
 		}
 
 		s_Instance = this;
@@ -21,7 +29,6 @@ namespace Core {
 	{
 		while (m_Running)
 		{
-			std::cout << "The app is running!\n";
 			m_Running = false;
 		}
 	}
