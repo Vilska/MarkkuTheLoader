@@ -8,17 +8,27 @@ namespace Core {
 
 	enum EventTypes
 	{
-		WindowCloseEvent
+		WindowCloseEvent,
+		WindowResizeEvent
 	};
 
-	using EventVector = std::vector<EventTypes*>;
+	struct Event
+	{
+		EventTypes EventType;
+		bool Handled = false;
+
+		Event(EventTypes eventType)
+			: EventType(eventType) {}
+	};
+
+	using EventVector = std::vector<Event*>;
 
 	class EventHandler
 	{
 	public:
 		EventHandler() = default;
 
-		static void AddEvent(EventTypes event);
+		static void AddEvent(Event event);
 		static EventVector GetEvents() { return s_Instance->m_Events; }
 	private:
 		EventVector m_Events;

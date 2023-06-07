@@ -22,6 +22,7 @@ namespace Core {
 		virtual void Update() = 0;
 
 		virtual std::tuple<uint16_t, uint16_t> GetSize() const = 0;
+		virtual void* GetNativeWindow() = 0;
 
 		static std::unique_ptr<Window> Create(const WindowProps& props);
 	};

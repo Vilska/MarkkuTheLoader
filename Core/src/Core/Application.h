@@ -19,7 +19,7 @@ namespace Core {
 		void Run();
 
 		static Application* Get() { return s_Instance; }
-		std::unique_ptr<Window>& GetWindow() { return m_Window; }
+		Window& GetWindow() { return *m_Window; }
 	private:
 		bool m_Running = true;
 

@@ -31,8 +31,21 @@ namespace Core {
 		{
 			m_Window->Update();
 
-			if (Input::IsWindowBeingClosed())
+
+			Input::IsWindowBeingClosed([&]()
+			{
+				LOG_ERROR("TUHOA");
 				m_Running = false;
+			});
+
+			Input::IsWindowBeingResized([&](ResizeTuple tuple)
+			{
+				uint16_t x = std::get<0>(tuple);
+				uint16_t y = std::get<1>(tuple);
+
+				LOG_TRACE("{0}, {1}", x, y);
+			});
+
 		}
 	}
 

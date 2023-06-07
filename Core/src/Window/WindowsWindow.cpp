@@ -68,6 +68,15 @@ namespace Core {
 		{
 			EventHandler::AddEvent(WindowCloseEvent);
 		});
+
+		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			data.Width = width;
+			data.Height = height;
+
+			EventHandler::AddEvent(WindowResizeEvent);
+		});
 	}
 
 	void WindowsWindow::Update()
