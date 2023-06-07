@@ -24,13 +24,15 @@ project "Core"
         "src",
         "vendor/spdlog/include",
         "vendor/glfw/include",
-        "vendor/glad/include"
+        "vendor/glad/include",
+        "vendor/imgui"
     }
 
     links
     {
         "glfw",
         "glad",
+        "imgui",
         "opengl32.lib"
     }
 

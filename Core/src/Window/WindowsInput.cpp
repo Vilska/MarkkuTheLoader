@@ -22,7 +22,7 @@ namespace Core {
 			return;
 
 		int width, height;
-		glfwGetWindowSize(static_cast<GLFWwindow*>(Application::Get()->GetWindow().GetNativeWindow()), &width, &height);
+		glfwGetWindowSize(static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow()), &width, &height);
 
 		func({ uint16_t(width), uint16_t(height) });
 	}

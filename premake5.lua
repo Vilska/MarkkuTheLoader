@@ -13,6 +13,7 @@ workspace "Markku"
     group "Dependencies"
         include "Core/vendor/glfw"
         include "Core/vendor/glad"
+        include "Core/vendor/imgui"
     group ""
 
     include "Core"

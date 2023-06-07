@@ -14,7 +14,8 @@ namespace Core {
 
 		virtual void Update() override;
 
-		virtual std::tuple<uint16_t, uint16_t> GetSize() const override { return { m_Data.Width, m_Data.Height }; };
+		virtual uint16_t GetWidth() const override { return m_Data.Width; };
+		virtual uint16_t GetHeight() const override { return m_Data.Height; };
 		virtual void* GetNativeWindow() override { return m_Window; }
 	private:
 		void Init(const WindowProps& props);

@@ -22,31 +22,46 @@ namespace Core {
 
 		s_Instance = this;
 
-		m_Window = Window::Create({"Testi", 1280, 720});
+		m_Window = Window::Create({"Testi", 1920, 1080});
+
+		m_Gui = new GuiLayer();
+		PushLayer(m_Gui);
 	}
 
 	void Application::Run()
 	{
 		while (m_Running)
 		{
+			// Check for window related events
+			//Input::IsWindowBeingClosed([&]()
+			//{
+			//	m_Running = false;
+			//});
+
+			// Update layers
+			for (auto& layer : m_Layers)
+			{
+				layer->OnUpdate();
+			}
+
+			// Render GUI
+			m_Gui->Begin();
+			for (auto& layer : m_Layers)
+			{
+				layer->OnGuiRender();
+			}
+			m_Gui->End();
+
+			// Update the window
 			m_Window->Update();
 
-
-			Input::IsWindowBeingClosed([&]()
-			{
-				LOG_ERROR("TUHOA");
-				m_Running = false;
-			});
-
-			Input::IsWindowBeingResized([&](ResizeTuple tuple)
-			{
-				uint16_t x = std::get<0>(tuple);
-				uint16_t y = std::get<1>(tuple);
-
-				LOG_TRACE("{0}, {1}", x, y);
-			});
-
 		}
+	}
+
+	void Application::PushLayer(Layer* layer)
+	{
+		m_Layers.emplace_back(layer);
+		layer->OnAttach();
 	}
 
 }

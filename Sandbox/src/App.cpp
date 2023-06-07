@@ -4,13 +4,28 @@
 
 using namespace Core;
 
+class ExampleLayer : public Layer
+{
+public:
+	ExampleLayer() = default;
+	virtual ~ExampleLayer() = default;
+
+	virtual void OnGuiRender() override
+	{
+		// This is not working for some reason
+		ImGui::Begin("Test");
+		ImGui::Text("This is a test window!");
+		ImGui::End();
+	}
+};
+
 class App : public Application
 {
 public:
 	App()
 		: Application()
 	{
-		LOG_INFO("App is constructed!");
+		PushLayer(new ExampleLayer());
 	}
 };
 
