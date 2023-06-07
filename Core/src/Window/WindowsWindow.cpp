@@ -1,8 +1,8 @@
 #include "cpch.h"
-
 #include "WindowsWindow.h"
 
 #include "glad/glad.h"
+#include "Event/EventHandler.h"
 
 namespace Core {
 
@@ -48,12 +48,26 @@ namespace Core {
 			LOG_ERROR("Failed to initialize GLAD");
 		}
 
+		glfwSetWindowUserPointer(m_Window, &m_Data);
+
 		glViewport(0, 0, 1280, 720);
+
+		// GLFW callbacks
+		SetCallbacks();
 	}
 
 	void WindowsWindow::Shutdown()
 	{
 		glfwDestroyWindow(m_Window);
+	}
+
+	void WindowsWindow::SetCallbacks()
+	{
+		// Window size
+		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
+		{
+			EventHandler::AddEvent(WindowCloseEvent);
+		});
 	}
 
 	void WindowsWindow::Update()

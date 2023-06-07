@@ -18,6 +18,7 @@ namespace Core {
 	private:
 		void Init(const WindowProps& props);
 		void Shutdown();
+		void SetCallbacks();
 	private:
 		GLFWwindow* m_Window;
 

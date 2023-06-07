@@ -2,6 +2,7 @@
 #include "Application.h"
 
 #include "Log.h"
+#include "Input.h"
 
 namespace Core {
 
@@ -29,6 +30,9 @@ namespace Core {
 		while (m_Running)
 		{
 			m_Window->Update();
+
+			if (Input::IsWindowBeingClosed())
+				m_Running = false;
 		}
 	}
 
