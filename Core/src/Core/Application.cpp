@@ -22,21 +22,31 @@ namespace Core {
 
 		s_Instance = this;
 
-		m_Window = Window::Create({"Testi", 1920, 1080});
+		m_Window = Window::Create({"Testi", 1280, 720});
 
 		m_Gui = new GuiLayer();
 		PushLayer(m_Gui);
+	}
+
+	Application::~Application()
+	{
+		for (auto& layer : m_Layers)
+		{
+			layer->OnDetach();
+		}
 	}
 
 	void Application::Run()
 	{
 		while (m_Running)
 		{
+			m_Window->Clear();
+
 			// Check for window related events
-			//Input::IsWindowBeingClosed([&]()
-			//{
-			//	m_Running = false;
-			//});
+			Input::IsWindowBeingClosed([&]()
+			{
+				m_Running = false;
+			});
 
 			// Update layers
 			for (auto& layer : m_Layers)
@@ -44,7 +54,7 @@ namespace Core {
 				layer->OnUpdate();
 			}
 
-			// Render GUI
+			//Render GUI
 			m_Gui->Begin();
 			for (auto& layer : m_Layers)
 			{

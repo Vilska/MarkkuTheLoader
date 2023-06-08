@@ -33,7 +33,7 @@ namespace Core {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, (char*)m_Data.Title.c_str(), NULL, NULL);
+		m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), NULL, NULL);
 		if (m_Window == NULL)
 		{
 			LOG_ERROR("Failed to create GLFW window!");
@@ -42,15 +42,14 @@ namespace Core {
 		}
 
 		glfwMakeContextCurrent(m_Window);
+		glfwSetWindowUserPointer(m_Window, &m_Data);
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			LOG_ERROR("Failed to initialize GLAD");
 		}
 
-		glfwSetWindowUserPointer(m_Window, &m_Data);
-
-		glViewport(0, 0, 1280, 720);
+		glViewport(0, 0, m_Data.Width, m_Data.Height);
 
 		// GLFW callbacks
 		SetCallbacks();
@@ -79,10 +78,14 @@ namespace Core {
 		});
 	}
 
-	void WindowsWindow::Update()
+	void WindowsWindow::Clear()
 	{
 		glClearColor(0.2f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
+	void WindowsWindow::Update()
+	{
 		glfwPollEvents();
 		glfwSwapBuffers(m_Window);
 	}

@@ -17,6 +17,7 @@ namespace Core {
 	{
 	public:
 		Application();
+		~Application();
 
 		void Run();
 
