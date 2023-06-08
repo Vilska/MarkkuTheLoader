@@ -3,7 +3,10 @@
 #include "Window.h"
 #include "Layer.h"
 #include "GUI/GuiLayer.h"
+
 #include "Renderer/Shader.h"
+#include "Renderer/Buffer.h"
+#include "Renderer/VertexArray.h"
 
 namespace Core {
 
@@ -33,7 +36,9 @@ namespace Core {
 		bool m_Running = true;
 
 		// Test
-		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+		std::shared_ptr<VertexBuffer> m_VertexBuffer;
+		std::shared_ptr<IndexBuffer> m_IndexBuffer;
+		std::shared_ptr<VertexArray> m_VertexArray;
 
 		// Subclass pointers
 		std::unique_ptr<Window> m_Window;

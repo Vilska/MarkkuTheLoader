@@ -31,24 +31,29 @@ namespace Core {
 		//PushLayer(m_Gui);
 
 		// Triangle test
+		Shader::LoadShaders();
+
+		m_VertexArray = VertexArray::Create();
+
 		float vertices[] =
 		{
-			-0.5, -0.5, 0.0f,
-			0.5, -0.5, 0.0f,
-			0.0, 0.5, 0.0f
+			 0.5f,  0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			-0.5f, -0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f 
 		};
 
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
+		m_VertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
+		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
-		glGenBuffers(1, &m_VertexBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		uint32_t indices[] =
+		{
+			0, 1, 3,
+			1, 2, 3
+		};
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-		glEnableVertexAttribArray(0);
-
-		Shader::LoadShaders();
+		m_IndexBuffer = IndexBuffer::Create(indices, 6);
+		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 	}
 
 	Application::~Application()
@@ -87,8 +92,9 @@ namespace Core {
 
 			// Update the window
 
-			glBindVertexArray(m_VertexArray);
-			glDrawArrays(GL_TRIANGLES, 0, 3);
+			Shader::Bind();
+			m_VertexArray->Bind();
+			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 			m_Window->Update();
 

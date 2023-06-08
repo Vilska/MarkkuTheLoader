@@ -33,21 +33,23 @@ namespace Core {
 		glCompileShader(fragmentShader);
 
 		// Create shader program
-		GLuint shaderProgram = glCreateProgram();
+		s_Instance->m_ShaderProgram = glCreateProgram();
 
 		// Attach proper shaders to the program
-		glAttachShader(shaderProgram, vertexShader);
-		glAttachShader(shaderProgram, fragmentShader);
+		glAttachShader(s_Instance->m_ShaderProgram, vertexShader);
+		glAttachShader(s_Instance->m_ShaderProgram, fragmentShader);
 
 		// Link all together
-		glLinkProgram(shaderProgram);
+		glLinkProgram(s_Instance->m_ShaderProgram);
 
 		// Delete shaders
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
+	}
 
-		// Use the freshly created program
-		glUseProgram(shaderProgram);
+	void Shader::Bind()
+	{
+		glUseProgram(s_Instance->m_ShaderProgram);
 	}
 
 	std::string Shader::ReadFile(const std::string& filepath)

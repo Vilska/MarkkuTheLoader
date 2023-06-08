@@ -9,12 +9,14 @@ namespace Core {
 	{
 	public:
 		Shader() = default;
-		~Shader() = default;
 
 		static void LoadShaders();
+		static void Bind();
 	private:
 		std::string ReadFile(const std::string& filepath);
 	private:
+		unsigned int m_ShaderProgram;
+
 		static std::unique_ptr<Shader> s_Instance;
 	};
 
