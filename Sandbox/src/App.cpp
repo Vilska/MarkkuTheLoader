@@ -61,7 +61,7 @@ class App : public Application
 {
 public:
 	App()
-		: Application()
+		: Application({"MarkkuTheLoader", 1280, 720})
 	{
 		PushLayer(new ExampleLayer());
 	}
