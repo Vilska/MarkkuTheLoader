@@ -35,24 +35,28 @@ namespace Core {
 
 		m_VertexArray = VertexArray::Create();
 
-		float vertices[] =
+		float vertices[3 * 7] = 
 		{
-			 0.5f,  0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			-0.5f, -0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f 
+			-0.5f, -0.5f, 0.0f, /**/ 1.0f, 0.0f, 1.0f, 0.0f,
+			0.5f, -0.5f, 0.0f, /**/ 1.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.5f, 0.0f, /**/ 1.0f, 0.0f, 1.0f, 0.0f
 		};
 
 		m_VertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
-		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
-		uint32_t indices[] =
+		BufferLayout layout =
 		{
-			0, 1, 3,
-			1, 2, 3
+			{ "a_Position", ShaderDataType::Float3},
+			{ "a_Color", ShaderDataType::Float4}
 		};
 
-		m_IndexBuffer = IndexBuffer::Create(indices, 6);
+		m_VertexBuffer->SetLayout(layout);
+
+		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
+
+		uint32_t indices[3] = { 0, 1, 2 };
+
+		m_IndexBuffer = IndexBuffer::Create(indices, 3);
 		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 	}
 

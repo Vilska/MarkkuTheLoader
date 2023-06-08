@@ -9,6 +9,7 @@ namespace Core {
 	{
 	public:
 		Shader() = default;
+		~Shader();
 
 		static void LoadShaders();
 		static void Bind();

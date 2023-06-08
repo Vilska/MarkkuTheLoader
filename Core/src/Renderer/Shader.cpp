@@ -9,6 +9,11 @@
 namespace Core {
 
 	std::unique_ptr<Shader> Shader::s_Instance = std::make_unique<Shader>();
+	
+	Shader::~Shader()
+	{
+		glDeleteProgram(m_ShaderProgram);
+	}
 
 	void Shader::LoadShaders()
 	{
@@ -43,8 +48,8 @@ namespace Core {
 		glLinkProgram(s_Instance->m_ShaderProgram);
 
 		// Delete shaders
-		glDeleteShader(vertexShader);
-		glDeleteShader(fragmentShader);
+		glDetachShader(s_Instance->m_ShaderProgram, vertexShader);
+		glDetachShader(s_Instance->m_ShaderProgram, fragmentShader);
 	}
 
 	void Shader::Bind()

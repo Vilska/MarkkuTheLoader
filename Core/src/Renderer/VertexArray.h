@@ -13,6 +13,7 @@ namespace Core {
 	{
 	public:
 		VertexArray();
+		~VertexArray();
 
 		void Bind();
 
