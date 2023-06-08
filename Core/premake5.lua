@@ -11,7 +11,10 @@ project "Core"
     files
     {
         "src/**.h",
-        "src/**.cpp"
+        "src/**.cpp",
+        "vendor/stb_image/**.*",
+        "vendor/glm/glm/**.hpp",
+		"vendor/glm/glm/**.inl"
     }
 
     defines
@@ -25,7 +28,9 @@ project "Core"
         "vendor/spdlog/include",
         "vendor/glfw/include",
         "vendor/glad/include",
-        "vendor/imgui"
+        "vendor/imgui",
+        "vendor/stb_image",
+        "vendor/glm"
     }
 
     links

@@ -35,11 +35,11 @@ namespace Core {
 
 		m_VertexArray = VertexArray::Create();
 
-		float vertices[3 * 7] = 
-		{
-			-0.5f, -0.5f, 0.0f, /**/ 1.0f, 0.0f, 1.0f, 0.0f,
-			0.5f, -0.5f, 0.0f, /**/ 1.0f, 1.0f, 0.0f, 0.0f,
-			0.0f, 0.5f, 0.0f, /**/ 1.0f, 0.0f, 1.0f, 0.0f
+		float vertices[5 * 4] = {
+			-0.5f, -0.5f, 0.0f,		/**/	0.0f, 0.0f,
+			0.5f, -0.5f, 0.0f,		/**/	1.0f, 0.0f,
+			0.5f, 0.5f, 0.0f,		/**/	1.0f, 1.0f,
+			-0.5f, 0.5f, 0.0f,		/**/	0.0f, 1.0f
 		};
 
 		m_VertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
@@ -47,17 +47,22 @@ namespace Core {
 		BufferLayout layout =
 		{
 			{ "a_Position", ShaderDataType::Float3},
-			{ "a_Color", ShaderDataType::Float4}
+			{ "a_TextureCoords", ShaderDataType::Float2}
 		};
 
 		m_VertexBuffer->SetLayout(layout);
 
 		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
-		uint32_t indices[3] = { 0, 1, 2 };
+		uint32_t indices[6] = { 0, 1, 2, 2, 3, 0 };
 
-		m_IndexBuffer = IndexBuffer::Create(indices, 3);
+		m_IndexBuffer = IndexBuffer::Create(indices, 6);
 		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
+
+		m_Texture = Texture::Create("assets/textures/brick.jpg");
+
+		Shader::Bind();
+		Shader::UploadUniformInt("u_Texture", 0);
 	}
 
 	Application::~Application()

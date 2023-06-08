@@ -16,7 +16,8 @@ project "Sandbox"
         "../Core/vendor/spdlog/include",
         "../Core/src",
         "../Core/vendor/glad/include",
-        "../Core/vendor/imgui"
+        "../Core/vendor/imgui",
+        "../Core/vendor/glm"
     }
 
     links
