@@ -44,6 +44,7 @@ namespace Core {
 		// Subclass pointers
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<Texture> m_Texture;
+		std::unique_ptr<Texture> m_OverlayTexture;
 		//GuiLayer* m_Gui;
 
 		// Vectors

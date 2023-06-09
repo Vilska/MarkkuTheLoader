@@ -49,6 +49,7 @@ namespace Core {
 			LOG_ERROR("Failed to initialize GLAD");
 		}
 
+		glEnable(GL_DEPTH_TEST);
 		glViewport(0, 0, m_Data.Width, m_Data.Height);
 
 		// GLFW callbacks
@@ -81,7 +82,7 @@ namespace Core {
 	void WindowsWindow::Clear()
 	{
 		glClearColor(0.2f, 1.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void WindowsWindow::Update()
