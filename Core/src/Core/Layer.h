@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "Event/Event.h"
+
 namespace Core {
 
 	class Layer
@@ -12,7 +14,7 @@ namespace Core {
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void Update() {}
 		virtual void OnGuiRender() {}
 	};
 

@@ -2,20 +2,25 @@
 
 #include <memory>
 #include <tuple>
-#include <functional>
 
 namespace Core {
-
-	using ResizeTuple = std::pair<uint16_t, uint16_t>;
 
 	class Input
 	{
 	public:
-		static void IsWindowBeingClosed(const std::function<void()>& func) { return s_Instance->IsWindowBeingClosedImpl(func); }
-		static void IsWindowBeingResized(const std::function<void(ResizeTuple)>& func) { return s_Instance->IsWindowBeingResizedImpl(func); }
+		inline static bool IsKeyPressed(int keycode) { return s_Instance->IsKeyPressedImpl(keycode); }
+
+		inline static bool IsMouseButtonPressed(int button) { return s_Instance->IsMouseButtonPressedImpl(button); }
+		inline static std::pair<float, float> GetMousePosition() { return s_Instance->GetMousePositionImpl(); }
+		inline static float GetMouseX() { return s_Instance->GetMouseXImpl(); }
+		inline static float GetMouseY() { return s_Instance->GetMouseYImpl(); }
 	protected:
-		virtual void IsWindowBeingClosedImpl(const std::function<void()>& func) = 0;
-		virtual void IsWindowBeingResizedImpl(const std::function<void(ResizeTuple)>& func) = 0;
+		virtual bool IsKeyPressedImpl(int keycode) = 0;
+
+		virtual bool IsMouseButtonPressedImpl(int button) = 0;
+		virtual std::pair<float, float> GetMousePositionImpl() = 0;
+		virtual float GetMouseXImpl() = 0;
+		virtual float GetMouseYImpl() = 0;
 	private:
 		static std::unique_ptr<Input> s_Instance;
 	};

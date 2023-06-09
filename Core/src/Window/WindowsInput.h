@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core/Input.h"
-#include "Event/EventHandler.h"
 
 namespace Core {
 
@@ -10,10 +9,12 @@ namespace Core {
 	public:
 		WindowsInput() = default;
 
-		virtual void IsWindowBeingClosedImpl(const std::function<void()>& func) override;
-		virtual void IsWindowBeingResizedImpl(const std::function<void(ResizeTuple)>& func) override;
-	private:
-		bool CheckEvent(EventTypes eventType);
+		virtual bool IsKeyPressedImpl(int keycode) override;
+
+		virtual bool IsMouseButtonPressedImpl(int button) override;
+		virtual std::pair<float, float> GetMousePositionImpl() override;
+		virtual float GetMouseXImpl() override;
+		virtual float GetMouseYImpl() override;
 	};
 
 }

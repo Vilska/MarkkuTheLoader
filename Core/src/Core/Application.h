@@ -8,6 +8,10 @@
 #include "Renderer/Buffer.h"
 #include "Renderer/VertexArray.h"
 #include "Renderer/Texture.h"
+#include "Renderer/Camera.h"
+
+#include "Event/Event.h"
+#include "Event/WindowEvent.h"
 
 namespace Core {
 
@@ -28,13 +32,16 @@ namespace Core {
 		~Application();
 
 		void Run();
-
+		void OnEvent(Event& event);
 		void PushLayer(Layer* layer);
 
 		static Application& Get() { return *s_Instance; }
 		Window& GetWindow() { return *m_Window; }
 	private:
+		bool OnWindowClose(WindowCloseEvent& event) { m_Running = false; return m_Running; }
+	private:
 		bool m_Running = true;
+		float m_DeltaTime = 0;
 
 		// Buffers & vertex arrays
 		std::shared_ptr<VertexBuffer> m_VertexBuffer;
@@ -45,6 +52,7 @@ namespace Core {
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<Texture> m_Texture;
 		std::unique_ptr<Texture> m_OverlayTexture;
+		std::unique_ptr<Camera> m_Camera;
 		//GuiLayer* m_Gui;
 
 		// Vectors

@@ -3,6 +3,7 @@
 
 #include "Log.h"
 #include "Input.h"
+#include "Time.h"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -30,6 +31,9 @@ namespace Core {
 		s_Instance = this;
 
 		m_Window = Window::Create({ props.Label, props.Width, props.Height});
+		m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+
+		m_Camera = Camera::Create(45.0f, props.Width / props.Height);
 
 		//m_Gui = new GuiLayer();
 		//PushLayer(m_Gui);
@@ -120,18 +124,16 @@ namespace Core {
 	{
 		while (m_Running)
 		{
+			m_DeltaTime = DeltaTime::Calculate(glfwGetTime());
+
 			m_Window->Clear();
 
-			// Check for window related events
-			Input::IsWindowBeingClosed([&]()
-			{
-				m_Running = false;
-			});
+			m_Camera->Update(m_DeltaTime);
 
 			// Update layers
 			for (auto& layer : m_Layers)
 			{
-				layer->OnUpdate();
+				layer->Update();
 			}
 
 			//Render GUI
@@ -163,12 +165,7 @@ namespace Core {
 				glm::vec3(-1.3f,  1.0f, -1.5f)
 			};
 
-			glm::mat4 view(1.0f);
-			glm::mat4 projection(1.0f);
-			projection = glm::perspective(glm::radians(45.0f), (float)GetWindow().GetWidth() / (float)GetWindow().GetHeight(), 0.1f, 100.0f);
-			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-			Shader::UploadUniformMat4("projection", projection);
-			Shader::UploadUniformMat4("view", view);
+			Shader::UploadUniformMat4("ViewProjection", m_Camera->GetViewProjectionMatrix());
 
 			m_VertexArray->Bind();
 			for (int i = 0; i < 10; i++)
@@ -177,7 +174,7 @@ namespace Core {
 				model = glm::translate(model, cubePositions[i]);
 				float angle = 20.0f * i * glfwGetTime();
 				model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3, 0.5));
-				Shader::UploadUniformMat4("model", model);
+				Shader::UploadUniformMat4("Model", model);
 
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}
@@ -185,6 +182,14 @@ namespace Core {
 			m_Window->Update();
 
 		}
+	}
+
+	void Application::OnEvent(Event& event)
+	{
+		EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<WindowCloseEvent>(std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
+
+		m_Camera->OnEvent(event);
 	}
 
 	void Application::PushLayer(Layer* layer)

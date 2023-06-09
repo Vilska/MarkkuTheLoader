@@ -1,6 +1,10 @@
 #pragma once
 
-#include "cpch.h"
+#include <string>
+#include <memory>
+#include <functional>
+
+#include "Event/Event.h"
 
 namespace Core {
 
@@ -17,6 +21,8 @@ namespace Core {
 	class Window
 	{
 	public:
+		using EventCallbackFn = std::function<void(Event&)>;
+
 		virtual ~Window() = default;
 
 		virtual void Clear() = 0;
@@ -25,6 +31,8 @@ namespace Core {
 		virtual uint16_t GetWidth() const = 0;
 		virtual uint16_t GetHeight() const = 0;
 		virtual void* GetNativeWindow() = 0;
+
+		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 
 		static std::unique_ptr<Window> Create(const WindowProps& props);
 	};

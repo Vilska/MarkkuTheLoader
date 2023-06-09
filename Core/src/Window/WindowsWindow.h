@@ -18,6 +18,8 @@ namespace Core {
 		virtual uint16_t GetWidth() const override { return m_Data.Width; };
 		virtual uint16_t GetHeight() const override { return m_Data.Height; };
 		virtual void* GetNativeWindow() override { return m_Window; }
+
+		inline virtual void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 	private:
 		void Init(const WindowProps& props);
 		void Shutdown();
@@ -30,6 +32,8 @@ namespace Core {
 			std::string Title;
 			uint16_t Width;
 			uint16_t Height;
+
+			EventCallbackFn EventCallback;
 		};
 
 		WindowData m_Data;

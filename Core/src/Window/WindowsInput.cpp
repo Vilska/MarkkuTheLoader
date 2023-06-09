@@ -1,45 +1,46 @@
 #include "cpch.h"
 #include "WindowsInput.h"
 
-#include "GLFW/glfw3.h"
 #include "Core/Application.h"
+#include <GLFW/glfw3.h>
 
 namespace Core {
 
 	std::unique_ptr<Input> Input::s_Instance = std::make_unique<WindowsInput>();
 
-	void WindowsInput::IsWindowBeingClosedImpl(const std::function<void()>& func)
+	bool WindowsInput::IsKeyPressedImpl(int keycode)
 	{
-		if (!CheckEvent(WindowCloseEvent))
-			return;
-
-		func();
+		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+		auto state = glfwGetKey(window, keycode);
+		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	void WindowsInput::IsWindowBeingResizedImpl(const std::function<void(ResizeTuple)>& func)
+	bool WindowsInput::IsMouseButtonPressedImpl(int button)
 	{
-		if (!CheckEvent(WindowResizeEvent))
-			return;
-
-		int width, height;
-		glfwGetWindowSize(static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow()), &width, &height);
-
-		func({ uint16_t(width), uint16_t(height) });
+		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+		auto state = glfwGetMouseButton(window, button);
+		return state == GLFW_PRESS;
 	}
 
-	bool WindowsInput::CheckEvent(EventTypes eventType)
+	std::pair<float, float> WindowsInput::GetMousePositionImpl()
 	{
-		auto& events = EventHandler::GetEvents();
-		for (auto& event : events)
-		{
-			if (event->EventType != eventType || event->Handled)
-				continue;
-			
-			event->Handled = true;
-			return true;
-		}
+		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+		double xPos, yPos;
+		glfwGetCursorPos(window, &xPos, &yPos);
 
-		return false;
+		return { (float)xPos, (float)yPos };
+	}
+
+	float WindowsInput::GetMouseXImpl()
+	{
+		float x = std::get<0>(GetMousePositionImpl());
+		return x;
+	}
+
+	float WindowsInput::GetMouseYImpl()
+	{
+		float y = std::get<1>(GetMousePositionImpl());
+		return y;
 	}
 
 }
