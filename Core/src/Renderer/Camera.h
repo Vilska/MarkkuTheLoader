@@ -16,7 +16,8 @@ namespace Core {
 		void Update(float deltaTime);
 		void OnEvent(Event& event);
 
-		glm::mat4 GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
+		const glm::vec3& GetPosition() const { return m_CameraPosition; }
+		const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
 
 		static std::unique_ptr<Camera> Create(float fov, float aspectRatio);
 	private:

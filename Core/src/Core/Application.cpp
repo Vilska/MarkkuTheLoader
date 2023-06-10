@@ -44,47 +44,47 @@ namespace Core {
 		Shader::LoadShaders({"Model", "Light"});
 
 		float vertices[] = {
-			-0.5f, -0.5f, -0.5f,
-			 0.5f, -0.5f, -0.5f,
-			 0.5f,  0.5f, -0.5f,
-			 0.5f,  0.5f, -0.5f,
-			-0.5f,  0.5f, -0.5f,
-			-0.5f, -0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 
-			-0.5f, -0.5f,  0.5f,
-			 0.5f, -0.5f,  0.5f,
-			 0.5f,  0.5f,  0.5f,
-			 0.5f,  0.5f,  0.5f,
-			-0.5f,  0.5f,  0.5f,
-			-0.5f, -0.5f,  0.5f,
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+			 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
 
-			-0.5f,  0.5f,  0.5f,
-			-0.5f,  0.5f, -0.5f,
-			-0.5f, -0.5f, -0.5f,
-			-0.5f, -0.5f, -0.5f,
-			-0.5f, -0.5f,  0.5f,
-			-0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
 
-			 0.5f,  0.5f,  0.5f,
-			 0.5f,  0.5f, -0.5f,
-			 0.5f, -0.5f, -0.5f,
-			 0.5f, -0.5f, -0.5f,
-			 0.5f, -0.5f,  0.5f,
-			 0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+			 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+			 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
 
-			-0.5f, -0.5f, -0.5f,
-			 0.5f, -0.5f, -0.5f,
-			 0.5f, -0.5f,  0.5f,
-			 0.5f, -0.5f,  0.5f,
-			-0.5f, -0.5f,  0.5f,
-			-0.5f, -0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+			 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
 
-			-0.5f,  0.5f, -0.5f,
-			 0.5f,  0.5f, -0.5f,
-			 0.5f,  0.5f,  0.5f,
-			 0.5f,  0.5f,  0.5f,
-			-0.5f,  0.5f,  0.5f,
-			-0.5f,  0.5f, -0.5f,
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+			 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 		};
 
 		m_VertexArray = VertexArray::Create();
@@ -92,7 +92,8 @@ namespace Core {
 		m_VertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
 		BufferLayout layout =
 		{
-			{ "a_Position", ShaderDataType::Float3}
+			{ "a_Position", ShaderDataType::Float3},
+			{ "a_Normal", ShaderDataType::Float3 }
 		};
 		m_VertexBuffer->SetLayout(layout);
 
@@ -104,7 +105,8 @@ namespace Core {
 		m_LightVBO = VertexBuffer::Create(vertices, sizeof(vertices));
 		BufferLayout lightLayout =
 		{
-			{ "a_Position", ShaderDataType::Float3}
+			{ "a_Position", ShaderDataType::Float3},
+			{ "a_Normal", ShaderDataType::Float3 }
 		};
 		m_LightVBO->SetLayout(lightLayout);
 
@@ -157,7 +159,17 @@ namespace Core {
 
 			// Model cube
 			Shader::Bind("Model");
+
+			glm::vec3 lightPos = { 1.2f, 2.0f, 2.0f };
+			lightPos.x = 1.0f + sin(glfwGetTime()) * 2.0f;
+			lightPos.y = (sin(glfwGetTime()) / 1.0f) * 2.0f;
+
 			Shader::UploadUniform("Model", "ViewProjection", m_Camera->GetViewProjectionMatrix());
+			Shader::UploadUniform("Model", "Transform", glm::mat4(1.0f));
+			Shader::UploadUniform("Model", "LightPos", lightPos);
+			Shader::UploadUniform("Model", "LightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+			Shader::UploadUniform("Model", "ViewPos", m_Camera->GetPosition());
+
 			m_VertexArray->Bind();
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -166,9 +178,9 @@ namespace Core {
 			Shader::UploadUniform("Light", "ViewProjection", m_Camera->GetViewProjectionMatrix());
 
 			glm::mat4 transform(1.0f);
-			transform = glm::translate(transform, glm::vec3(1.2f, 1.0f, 2.0f));
+			transform = glm::translate(transform, lightPos);
 			transform = glm::scale(transform, glm::vec3(0.2f));
-			Shader::UploadUniform("Light", "Model", transform);
+			Shader::UploadUniform("Light", "Transform", transform);
 
 			m_LightVAO->Bind();
 			glDrawArrays(GL_TRIANGLES, 0, 36);
