@@ -35,70 +35,81 @@ namespace Core {
 
 		m_Camera = Camera::Create(45.0f, props.Width / props.Height);
 
-		m_TestModel = std::make_unique<Model>("assets/models/backpack.obj");
+		//m_TestModel = std::make_unique<Model>("assets/models/backpack.obj");
 
 		//m_Gui = new GuiLayer();
 		//PushLayer(m_Gui);
 
 		// Test
-		Shader::LoadShaders();
+		Shader::LoadShaders({"Model", "Light"});
 
-		//m_VertexArray = VertexArray::Create();
+		float vertices[] = {
+			-0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f, -0.5f,
+			 0.5f,  0.5f, -0.5f,
+			 0.5f,  0.5f, -0.5f,
+			-0.5f,  0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,
 
-		//float vertices[] = {
-		//	-0.5f, -0.5f, -0.5f,
-		//	 0.5f, -0.5f, -0.5f,
-		//	 0.5f,  0.5f, -0.5f,
-		//	 0.5f,  0.5f, -0.5f,
-		//	-0.5f,  0.5f, -0.5f,
-		//	-0.5f, -0.5f, -0.5f,
+			-0.5f, -0.5f,  0.5f,
+			 0.5f, -0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f,
+			-0.5f, -0.5f,  0.5f,
 
-		//	-0.5f, -0.5f,  0.5f,
-		//	 0.5f, -0.5f,  0.5f,
-		//	 0.5f,  0.5f,  0.5f,
-		//	 0.5f,  0.5f,  0.5f,
-		//	-0.5f,  0.5f,  0.5f,
-		//	-0.5f, -0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,
+			-0.5f, -0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f,
 
-		//	-0.5f,  0.5f,  0.5f,
-		//	-0.5f,  0.5f, -0.5f,
-		//	-0.5f, -0.5f, -0.5f,
-		//	-0.5f, -0.5f, -0.5f,
-		//	-0.5f, -0.5f,  0.5f,
-		//	-0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f, -0.5f,
+			 0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
 
-		//	 0.5f,  0.5f,  0.5f,
-		//	 0.5f,  0.5f, -0.5f,
-		//	 0.5f, -0.5f, -0.5f,
-		//	 0.5f, -0.5f, -0.5f,
-		//	 0.5f, -0.5f,  0.5f,
-		//	 0.5f,  0.5f,  0.5f,
+			-0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f,  0.5f,
+			 0.5f, -0.5f,  0.5f,
+			-0.5f, -0.5f,  0.5f,
+			-0.5f, -0.5f, -0.5f,
 
-		//	-0.5f, -0.5f, -0.5f,
-		//	 0.5f, -0.5f, -0.5f,
-		//	 0.5f, -0.5f,  0.5f,
-		//	 0.5f, -0.5f,  0.5f,
-		//	-0.5f, -0.5f,  0.5f,
-		//	-0.5f, -0.5f, -0.5f,
+			-0.5f,  0.5f, -0.5f,
+			 0.5f,  0.5f, -0.5f,
+			 0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f, -0.5f,
+		};
 
-		//	-0.5f,  0.5f, -0.5f,
-		//	 0.5f,  0.5f, -0.5f,
-		//	 0.5f,  0.5f,  0.5f,
-		//	 0.5f,  0.5f,  0.5f,
-		//	-0.5f,  0.5f,  0.5f,
-		//	-0.5f,  0.5f, -0.5f,
-		//};
+		m_VertexArray = VertexArray::Create();
 
-		//m_VertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
+		m_VertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
+		BufferLayout layout =
+		{
+			{ "a_Position", ShaderDataType::Float3}
+		};
+		m_VertexBuffer->SetLayout(layout);
 
-		//BufferLayout layout =
-		//{
-		//	{ "a_Position", ShaderDataType::Float3}
-		//};
+		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
-		//m_VertexBuffer->SetLayout(layout);
+		// Light
+		m_LightVAO = VertexArray::Create();
 
-		//m_VertexArray->AddVertexBuffer(m_VertexBuffer);
+		m_LightVBO = VertexBuffer::Create(vertices, sizeof(vertices));
+		BufferLayout lightLayout =
+		{
+			{ "a_Position", ShaderDataType::Float3}
+		};
+		m_LightVBO->SetLayout(lightLayout);
+
+		m_LightVAO->AddVertexBuffer(m_LightVBO);
+
 
 		//uint32_t indices[6] = { 0, 1, 2, 2, 3, 0 };
 
@@ -141,11 +152,29 @@ namespace Core {
 			//}
 			//m_Gui->End();
 
-			Shader::Bind();
-			Shader::UploadUniformMat4("ViewProjection", m_Camera->GetViewProjectionMatrix());
+			//Shader::Bind();
+			//Shader::UploadUniformMat4("ViewProjection", m_Camera->GetViewProjectionMatrix());
+
+			// Model cube
+			Shader::Bind("Model");
+			Shader::UploadUniform("Model", "ViewProjection", m_Camera->GetViewProjectionMatrix());
+			m_VertexArray->Bind();
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+
+			// Light cube
+			Shader::Bind("Light");
+			Shader::UploadUniform("Light", "ViewProjection", m_Camera->GetViewProjectionMatrix());
+
+			glm::mat4 transform(1.0f);
+			transform = glm::translate(transform, glm::vec3(1.2f, 1.0f, 2.0f));
+			transform = glm::scale(transform, glm::vec3(0.2f));
+			Shader::UploadUniform("Light", "Model", transform);
+
+			m_LightVAO->Bind();
+			glDrawArrays(GL_TRIANGLES, 0, 36);
 
 			// Test model
-			m_TestModel->Draw();
+			//m_TestModel->Draw();
 
 			m_Window->Update();
 

@@ -49,6 +49,9 @@ namespace Core {
 		std::shared_ptr<VertexBuffer> m_VertexBuffer;
 		std::shared_ptr<IndexBuffer> m_IndexBuffer;
 		std::shared_ptr<VertexArray> m_VertexArray;
+		std::shared_ptr<VertexBuffer> m_LightVBO;
+		std::shared_ptr<IndexBuffer> m_LightIBO;
+		std::shared_ptr<VertexArray> m_LightVAO;
 
 		// Subclass pointers
 		std::unique_ptr<Window> m_Window;
