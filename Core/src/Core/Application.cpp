@@ -35,81 +35,78 @@ namespace Core {
 
 		m_Camera = Camera::Create(45.0f, props.Width / props.Height);
 
+		m_TestModel = std::make_unique<Model>("assets/models/backpack.obj");
+
 		//m_Gui = new GuiLayer();
 		//PushLayer(m_Gui);
 
 		// Test
 		Shader::LoadShaders();
 
-		m_VertexArray = VertexArray::Create();
+		//m_VertexArray = VertexArray::Create();
 
-		float vertices[] = {
-			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-			 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		//float vertices[] = {
+		//	-0.5f, -0.5f, -0.5f,
+		//	 0.5f, -0.5f, -0.5f,
+		//	 0.5f,  0.5f, -0.5f,
+		//	 0.5f,  0.5f, -0.5f,
+		//	-0.5f,  0.5f, -0.5f,
+		//	-0.5f, -0.5f, -0.5f,
 
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-			 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-			 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-			 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		//	-0.5f, -0.5f,  0.5f,
+		//	 0.5f, -0.5f,  0.5f,
+		//	 0.5f,  0.5f,  0.5f,
+		//	 0.5f,  0.5f,  0.5f,
+		//	-0.5f,  0.5f,  0.5f,
+		//	-0.5f, -0.5f,  0.5f,
 
-			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		//	-0.5f,  0.5f,  0.5f,
+		//	-0.5f,  0.5f, -0.5f,
+		//	-0.5f, -0.5f, -0.5f,
+		//	-0.5f, -0.5f, -0.5f,
+		//	-0.5f, -0.5f,  0.5f,
+		//	-0.5f,  0.5f,  0.5f,
 
-			 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-			 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		//	 0.5f,  0.5f,  0.5f,
+		//	 0.5f,  0.5f, -0.5f,
+		//	 0.5f, -0.5f, -0.5f,
+		//	 0.5f, -0.5f, -0.5f,
+		//	 0.5f, -0.5f,  0.5f,
+		//	 0.5f,  0.5f,  0.5f,
 
-			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-			 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-			 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		//	-0.5f, -0.5f, -0.5f,
+		//	 0.5f, -0.5f, -0.5f,
+		//	 0.5f, -0.5f,  0.5f,
+		//	 0.5f, -0.5f,  0.5f,
+		//	-0.5f, -0.5f,  0.5f,
+		//	-0.5f, -0.5f, -0.5f,
 
-			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-		};
+		//	-0.5f,  0.5f, -0.5f,
+		//	 0.5f,  0.5f, -0.5f,
+		//	 0.5f,  0.5f,  0.5f,
+		//	 0.5f,  0.5f,  0.5f,
+		//	-0.5f,  0.5f,  0.5f,
+		//	-0.5f,  0.5f, -0.5f,
+		//};
 
-		m_VertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
+		//m_VertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
 
-		BufferLayout layout =
-		{
-			{ "a_Position", ShaderDataType::Float3},
-			{ "a_TextureCoords", ShaderDataType::Float2}
-		};
+		//BufferLayout layout =
+		//{
+		//	{ "a_Position", ShaderDataType::Float3}
+		//};
 
-		m_VertexBuffer->SetLayout(layout);
+		//m_VertexBuffer->SetLayout(layout);
 
-		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
+		//m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
 		//uint32_t indices[6] = { 0, 1, 2, 2, 3, 0 };
 
 		//m_IndexBuffer = IndexBuffer::Create(indices, 6);
 		//m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
-		m_Texture = Texture::Create("assets/textures/box.jpg");
-		m_OverlayTexture = Texture::Create("assets/textures/stop.png");
-
-		Shader::Bind();
-		Shader::UploadUniformInt("u_Texture1", 0);
-		Shader::UploadUniformInt("u_Texture2", 1);
+		//m_Texture = Texture::Create("assets/textures/box.jpg");
+		//m_OverlayTexture = Texture::Create("assets/textures/stop.png");
 	}
 
 	Application::~Application()
@@ -144,40 +141,11 @@ namespace Core {
 			//}
 			//m_Gui->End();
 
-			// Update the window
 			Shader::Bind();
-			m_Texture->Bind(0);
-			m_OverlayTexture->Bind(1);
-
-			// 3D test cubes
-
-			glm::vec3 cubePositions[] =
-			{
-				glm::vec3(0.0f,  0.0f,  0.0f),
-				glm::vec3(2.0f,  5.0f, -15.0f),
-				glm::vec3(-1.5f, -2.2f, -2.5f),
-				glm::vec3(-3.8f, -2.0f, -12.3f),
-				glm::vec3(2.4f, -0.4f, -3.5f),
-				glm::vec3(-1.7f,  3.0f, -7.5f),
-				glm::vec3(1.3f, -2.0f, -2.5f),
-				glm::vec3(1.5f,  2.0f, -2.5f),
-				glm::vec3(1.5f,  0.2f, -1.5f),
-				glm::vec3(-1.3f,  1.0f, -1.5f)
-			};
-
 			Shader::UploadUniformMat4("ViewProjection", m_Camera->GetViewProjectionMatrix());
 
-			m_VertexArray->Bind();
-			for (int i = 0; i < 10; i++)
-			{
-				glm::mat4 model(1.0f);
-				model = glm::translate(model, cubePositions[i]);
-				float angle = 20.0f * i * glfwGetTime();
-				model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3, 0.5));
-				Shader::UploadUniformMat4("Model", model);
-
-				glDrawArrays(GL_TRIANGLES, 0, 36);
-			}
+			// Test model
+			m_TestModel->Draw();
 
 			m_Window->Update();
 

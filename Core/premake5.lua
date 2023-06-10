@@ -30,7 +30,8 @@ project "Core"
         "vendor/glad/include",
         "vendor/imgui",
         "vendor/stb_image",
-        "vendor/glm"
+        "vendor/glm",
+        "vendor/assimp/include"
     }
 
     links
@@ -38,6 +39,7 @@ project "Core"
         "glfw",
         "glad",
         "imgui",
+        "assimp",
         "opengl32.lib"
     }
 

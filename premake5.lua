@@ -14,6 +14,7 @@ workspace "Markku"
         include "Core/vendor/glfw"
         include "Core/vendor/glad"
         include "Core/vendor/imgui"
+        include "Core/vendor/assimp"
     group ""
 
     include "Core"

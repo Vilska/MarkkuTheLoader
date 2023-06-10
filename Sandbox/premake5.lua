@@ -17,7 +17,8 @@ project "Sandbox"
         "../Core/src",
         "../Core/vendor/glad/include",
         "../Core/vendor/imgui",
-        "../Core/vendor/glm"
+        "../Core/vendor/glm",
+        "../Core/vendor/assimp/include"
     }
 
     links

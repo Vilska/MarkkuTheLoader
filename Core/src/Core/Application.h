@@ -13,6 +13,8 @@
 #include "Event/Event.h"
 #include "Event/WindowEvent.h"
 
+#include "Model/Model.h"
+
 namespace Core {
 
 	struct ApplicationProperties
@@ -53,6 +55,7 @@ namespace Core {
 		std::unique_ptr<Texture> m_Texture;
 		std::unique_ptr<Texture> m_OverlayTexture;
 		std::unique_ptr<Camera> m_Camera;
+		std::unique_ptr<Model> m_TestModel;
 		//GuiLayer* m_Gui;
 
 		// Vectors
