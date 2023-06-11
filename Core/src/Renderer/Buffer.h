@@ -3,6 +3,8 @@
 #include <vector>
 #include <memory>
 
+#include <glm/glm.hpp>
+
 namespace Core {
 
 	// Buffer layout
@@ -82,7 +84,7 @@ namespace Core {
 	class VertexBuffer
 	{
 	public:
-		VertexBuffer(float* vertices, uint32_t size);
+		VertexBuffer(const void* vertices, uint32_t size);
 		~VertexBuffer();
 
 		void Bind();
@@ -90,7 +92,7 @@ namespace Core {
 		const BufferLayout& GetLayout() const { return m_Layout; }
 		void SetLayout(const BufferLayout& layout) { m_Layout = layout; }
 
-		static std::shared_ptr<VertexBuffer> Create(float* vertices, uint32_t size);
+		static std::shared_ptr<VertexBuffer> Create(const void* vertices, uint32_t size);
 	private:
 		uint32_t m_VertexBuffer;
 		BufferLayout m_Layout;
@@ -100,17 +102,14 @@ namespace Core {
 	class IndexBuffer
 	{
 	public:
-		IndexBuffer(uint32_t* indices, uint32_t count);
+		IndexBuffer(const void* indices, uint32_t size);
 		~IndexBuffer();
 
 		void Bind();
 
-		uint32_t GetCount() const { return m_Count; }
-
-		static std::shared_ptr<IndexBuffer> Create(uint32_t* indices, uint32_t size);
+		static std::shared_ptr<IndexBuffer> Create(const void* indices, uint32_t size);
 	private:
 		uint32_t m_IndexBuffer;
-		uint32_t m_Count;
 	};
 
 }

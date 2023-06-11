@@ -20,7 +20,7 @@ namespace Core {
 	void Model::LoadModel(const std::string& filepath)
 	{
 		Assimp::Importer import;
-		const aiScene* scene = import.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs);
+		const aiScene* scene = import.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
@@ -39,12 +39,17 @@ namespace Core {
 		for (int i = 0; i < material->GetTextureCount(type); i++)
 		{
 			aiString str;
+
 			material->GetTexture(type, i, &str);
+
+			std::string string = str.C_Str();
+			std::string fullpath = m_Directory + "/" + string;
+
 			bool skip = false;
 
-			for (int j = 0; j < m_TexturesLoaded.size(); j++)
+			for (unsigned int j = 0; j < m_TexturesLoaded.size(); j++)
 			{
-				if (std::strcmp(m_TexturesLoaded[j].Path.data(), str.C_Str()) == 0)
+				if (m_TexturesLoaded[j].Path.compare(fullpath) == 0)
 				{
 					textures.push_back(m_TexturesLoaded[j]);
 					skip = true;
@@ -55,11 +60,7 @@ namespace Core {
 			if (!skip)
 			{
 				MeshTexture texture;
-
-				std::string string = str.C_Str();
-				std::string fullpath = m_Directory + "/" + string;
-
-				texture.ID = Texture::Load(string, fullpath);
+				texture.ID = Texture::Load(typeName, fullpath);
 				texture.Type = typeName;
 				texture.Path = fullpath;
 				textures.push_back(texture);
@@ -73,13 +74,13 @@ namespace Core {
 
 	void Model::ProcessNode(aiNode* node, const aiScene* scene)
 	{
-		for (int i = 0; i < node->mNumMeshes; i++)
+		for (unsigned int i = 0; i < node->mNumMeshes; i++)
 		{
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 			m_Meshes.push_back(ProcessMesh(mesh, scene));
 		}
 
-		for (int i = 0; i < node->mNumChildren; i++)
+		for (unsigned int i = 0; i < node->mNumChildren; i++)
 		{
 			ProcessNode(node->mChildren[i], scene);
 		}
@@ -92,7 +93,7 @@ namespace Core {
 		std::vector<MeshTexture> textures;
 
 		// Process vertices
-		for (int i = 0; i < mesh->mNumVertices; i++)
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
 			MeshVertex vertex;
 
@@ -127,7 +128,7 @@ namespace Core {
 		}
 
 		// Process indices
-		for (int i = 0; i < mesh->mNumFaces; i++)
+		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 		{
 			aiFace face = mesh->mFaces[i];
 			for (int j = 0; j < face.mNumIndices; j++)

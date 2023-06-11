@@ -25,12 +25,12 @@ namespace Core {
 	}
 
 	// Vertex buffer
-	std::shared_ptr<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size)
+	std::shared_ptr<VertexBuffer> VertexBuffer::Create(const void* vertices, uint32_t size)
 	{
 		return std::make_shared<VertexBuffer>(vertices, size);
 	}
 
-	VertexBuffer::VertexBuffer(float* vertices, uint32_t size)
+	VertexBuffer::VertexBuffer(const void* vertices, uint32_t size)
 	{
 		glGenBuffers(1, &m_VertexBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
@@ -48,9 +48,9 @@ namespace Core {
 	}
 
 	// Index buffer
-	std::shared_ptr<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count)
+	std::shared_ptr<IndexBuffer> IndexBuffer::Create(const void* indices, uint32_t size)
 	{
-		return std::make_shared<IndexBuffer>(indices, count);
+		return std::make_shared<IndexBuffer>(indices, size);
 	}
 
 	IndexBuffer::~IndexBuffer()
@@ -58,12 +58,11 @@ namespace Core {
 		glDeleteBuffers(1, &m_IndexBuffer);
 	}
 
-	IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count)
-		: m_Count(count) 
+	IndexBuffer::IndexBuffer(const void* indices, uint32_t size)
 	{
 		glGenBuffers(1, &m_IndexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
 	}
 
 	void IndexBuffer::Bind()

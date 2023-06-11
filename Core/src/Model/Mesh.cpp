@@ -4,11 +4,12 @@
 #include <glad/glad.h>
 
 #include "Renderer/Shader.h"
+#include "Renderer/Texture.h"
 
 namespace Core {
 
 	Mesh::Mesh(std::vector<MeshVertex> vertices, std::vector<uint32_t> indices, std::vector<MeshTexture> textures)
-		: Vertices(vertices), Indices(indices), Textures(textures)
+		: m_Vertices(vertices), m_Indices(indices), m_Textures(textures)
     {
         SetupMesh();
     }
@@ -20,12 +21,12 @@ namespace Core {
 
         Shader::Bind("Model");
 
-        for (int i = 0; i < Textures.size(); i++)
+        for (int i = 0; i < m_Textures.size(); i++)
         {
-            glActiveTexture(GL_TEXTURE0 + i);
+            Texture::Bind(m_Textures[i].Type);
 
             std::string number;
-            std::string name = Textures[i].Type;
+            std::string name = m_Textures[i].Type;
 
             if (name == "texture_diffuse")
                 number = std::to_string(diffuseIndex++);
@@ -33,39 +34,28 @@ namespace Core {
                 number = std::to_string(specularIndex++);
 
             Shader::UploadUniform("Model", ("material." + name + number).c_str(), i);
-            glBindTexture(GL_TEXTURE_2D, Textures[i].ID);
         }
-        glActiveTexture(GL_TEXTURE0);
 
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+        m_VertexArray->Bind();
+        glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 
 	void Mesh::SetupMesh()
 	{
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-        glGenBuffers(1, &IBO);
+        m_VertexArray = VertexArray::Create();
 
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        m_VertexBuffer = VertexBuffer::Create(&m_Vertices[0], m_Vertices.size() * sizeof(MeshVertex));
+        BufferLayout layout =
+        {
+        	{ "a_Position", ShaderDataType::Float3},
+        	{ "a_Normal", ShaderDataType::Float3 },
+        	{ "a_TexturePos", ShaderDataType::Float2 }
+        };
+        m_VertexBuffer->SetLayout(layout);
+        m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
-        glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(MeshVertex), &Vertices[0], GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indices.size() * sizeof(unsigned int), &Indices[0], GL_STATIC_DRAW);
-
-        // vertex positions
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), (void*)0);
-        // vertex normals
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), (void*)offsetof(MeshVertex, Normal));
-        // vertex texture coords
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), (void*)offsetof(MeshVertex, TexCoords));
-
-        glBindVertexArray(0);
+        m_IndexBuffer = IndexBuffer::Create(&m_Indices[0], m_Indices.size() * sizeof(uint32_t));
+        m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 	}
 }

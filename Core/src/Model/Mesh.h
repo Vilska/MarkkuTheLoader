@@ -5,6 +5,9 @@
 
 #include <glm/glm.hpp>
 
+#include "Renderer/Buffer.h"
+#include "Renderer/VertexArray.h"
+
 namespace Core {
 
 	struct MeshVertex
@@ -24,17 +27,19 @@ namespace Core {
 	class Mesh
 	{
 	public:
-		std::vector<MeshVertex> Vertices;
-		std::vector<uint32_t> Indices;
-		std::vector<MeshTexture> Textures;
-
 		Mesh(std::vector<MeshVertex> vertices, std::vector<uint32_t> indices, std::vector<MeshTexture> textures);
 
 		void Draw();
 	private:
-		uint32_t VAO, VBO, IBO;
-
 		void SetupMesh();
+	private:
+		std::shared_ptr<VertexBuffer> m_VertexBuffer;
+		std::shared_ptr<IndexBuffer> m_IndexBuffer;
+		std::shared_ptr<VertexArray> m_VertexArray;
+
+		std::vector<MeshVertex> m_Vertices;
+		std::vector<uint32_t> m_Indices;
+		std::vector<MeshTexture> m_Textures;
 	};
 
 }
