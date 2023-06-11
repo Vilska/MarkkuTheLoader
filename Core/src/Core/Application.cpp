@@ -35,13 +35,13 @@ namespace Core {
 
 		m_Camera = Camera::Create(45.0f, (float)props.Width / (float)props.Height);
 
-		//m_Gui = new GuiLayer();
-		//PushLayer(m_Gui);
+		m_Gui = new GuiLayer();
+		PushLayer(m_Gui);
 
 		// Test
 		Shader::LoadShaders({"Model", "Light"});
 
-		m_TestModel = std::make_unique<Model>("assets/models/backpack/backpack.obj");
+		//m_TestModel = std::make_unique<Model>("assets/models/blender/test.obj");
 
 		float vertices[] = {
 			-0.5f, -0.5f, -0.5f,
@@ -142,12 +142,12 @@ namespace Core {
 			}
 
 			//Render GUI
-			//m_Gui->Begin();
-			//for (auto& layer : m_Layers)
-			//{
-			//	layer->OnGuiRender();
-			//}
-			//m_Gui->End();
+			m_Gui->Begin();
+			for (auto& layer : m_Layers)
+			{
+				layer->OnGuiRender();
+			}
+			m_Gui->End();
 
 			//Shader::Bind();
 			//Shader::UploadUniformMat4("ViewProjection", m_Camera->GetViewProjectionMatrix());
@@ -155,7 +155,9 @@ namespace Core {
 			// Model cube
 			Shader::Bind("Model");
 
-			glm::vec3 lightPos = { 1.2f, 10.0f, 2.0f };
+			glm::vec3 lightPos = { 3.0f, 5.0f, 3.0f };
+			lightPos.x *= cos(glfwGetTime());
+			lightPos.z *= sin(glfwGetTime());
 
 			Shader::UploadUniform("Model", "ViewProjection", m_Camera->GetViewProjectionMatrix());
 			Shader::UploadUniform("Model", "Transform", glm::mat4(1.0f));
@@ -165,7 +167,7 @@ namespace Core {
 			Shader::UploadUniform("Model", "light.position", lightPos);
 			Shader::UploadUniform("Model", "light.color", glm::vec3(1.0f, 1.0f, 1.0f));
 			Shader::UploadUniform("Model", "light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
-			Shader::UploadUniform("Model", "light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+			Shader::UploadUniform("Model", "light.diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
 			Shader::UploadUniform("Model", "light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
 			// Light cube
@@ -181,7 +183,7 @@ namespace Core {
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 
 			// Test model
-			m_TestModel->Draw();
+			//m_TestModel->Draw();
 
 			m_Window->Update();
 

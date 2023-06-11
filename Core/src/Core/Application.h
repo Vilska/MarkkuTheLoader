@@ -46,9 +46,6 @@ namespace Core {
 		float m_DeltaTime = 0;
 
 		// Buffers & vertex arrays
-		std::shared_ptr<VertexBuffer> m_VertexBuffer;
-		std::shared_ptr<IndexBuffer> m_IndexBuffer;
-		std::shared_ptr<VertexArray> m_VertexArray;
 		std::shared_ptr<VertexBuffer> m_LightVBO;
 		std::shared_ptr<IndexBuffer> m_LightIBO;
 		std::shared_ptr<VertexArray> m_LightVAO;
@@ -57,7 +54,7 @@ namespace Core {
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<Camera> m_Camera;
 		std::unique_ptr<Model> m_TestModel;
-		//GuiLayer* m_Gui;
+		GuiLayer* m_Gui;
 
 		// Vectors
 		std::vector<Layer*> m_Layers;

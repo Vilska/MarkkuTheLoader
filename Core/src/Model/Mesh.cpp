@@ -20,20 +20,26 @@ namespace Core {
         uint32_t specularIndex = 1;
 
         Shader::Bind("Model");
-
-        for (int i = 0; i < m_Textures.size(); i++)
+        if (m_Textures.size() > 0)
         {
-            Texture::Bind(m_Textures[i].Type);
+            for (int i = 0; i < m_Textures.size(); i++)
+            {
+                Texture::Bind(m_Textures[i].Type);
 
-            std::string number;
-            std::string name = m_Textures[i].Type;
+                std::string number;
+                std::string name = m_Textures[i].Type;
 
-            if (name == "texture_diffuse")
-                number = std::to_string(diffuseIndex++);
-            else if (name == "texture_specular")
-                number = std::to_string(specularIndex++);
+                if (name == "texture_diffuse")
+                    number = std::to_string(diffuseIndex++);
+                else if (name == "texture_specular")
+                    number = std::to_string(specularIndex++);
 
-            Shader::UploadUniform("Model", ("material." + name + number).c_str(), i);
+                Shader::UploadUniform("Model", ("material." + name + number).c_str(), i);
+            }
+        }
+        else 
+        {
+            Shader::UploadUniform("Model", "NonTexture", 1);
         }
 
         m_VertexArray->Bind();

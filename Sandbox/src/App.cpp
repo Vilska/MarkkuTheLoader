@@ -10,25 +10,44 @@ public:
 	ExampleLayer() = default;
 	virtual ~ExampleLayer() = default;
 
+	std::unique_ptr<Framebuffer> FBO;
+	virtual void OnAttach()
+	{
+		FBO = Framebuffer::Create({ 1280, 720 });
+	}
+
+	virtual void Update() override
+	{
+		FBO->Bind();
+		FBO->Unbind();
+	}
+
 	virtual void OnGuiRender() override
 	{
 		// Main window flags
-		ImGuiWindowFlags windowFlags =
-			ImGuiWindowFlags_MenuBar |
-			ImGuiWindowFlags_NoDocking |
-			ImGuiWindowFlags_NoTitleBar |
-			ImGuiWindowFlags_NoCollapse |
-			ImGuiWindowFlags_NoResize |
-			ImGuiWindowFlags_NoMove |
-			ImGuiWindowFlags_NoBringToFrontOnFocus |
-			ImGuiWindowFlags_NoNavFocus;
+		//ImGuiWindowFlags windowFlags =
+		//	ImGuiWindowFlags_MenuBar |
+		//	ImGuiWindowFlags_NoDocking |
+		//	ImGuiWindowFlags_NoTitleBar |
+		//	ImGuiWindowFlags_NoCollapse |
+		//	ImGuiWindowFlags_NoResize |
+		//	ImGuiWindowFlags_NoMove |
+		//	ImGuiWindowFlags_NoBringToFrontOnFocus |
+		//	ImGuiWindowFlags_NoNavFocus;
 
-		ImGuiWindowFlags subWindowFlags = 
-			ImGuiWindowFlags_NoMove |
+		//ImGuiWindowFlags subWindowFlags = 
+		//	ImGuiWindowFlags_NoMove |
+		//	ImGuiWindowFlags_NoScrollbar |
+		//	ImGuiWindowFlags_NoScrollWithMouse |
+		//	ImGuiWindowFlags_NoTitleBar |
+		//	ImGuiWindowFlags_NoCollapse;
+
+		ImGuiWindowFlags windowFlags =
+			ImGuiWindowFlags_MenuBar;
+
+		ImGuiWindowFlags subWindowFlags =
 			ImGuiWindowFlags_NoScrollbar |
-			ImGuiWindowFlags_NoScrollWithMouse |
-			ImGuiWindowFlags_NoTitleBar |
-			ImGuiWindowFlags_NoCollapse;
+			ImGuiWindowFlags_NoScrollWithMouse;
 
 		// Main window configs
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -49,6 +68,9 @@ public:
 		ImGui::End();
 
 		ImGui::Begin("Viewport", (bool*)true, subWindowFlags);
+		// TODO
+		//uint32_t textureID = FBO->GetColorAttachmentRendererID();
+		//ImGui::Image((void*)textureID, ImVec2{ 1280, 720 }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 		ImGui::End();
 
 		// End main window

@@ -22,6 +22,7 @@ struct Light
 uniform Light light;
 
 uniform vec3 ViewPos;
+uniform bool NonTexture;
 
 in vec3 v_FragPos;
 in vec3 v_Normal;
@@ -42,5 +43,13 @@ void main()
     vec3 specular = light.specular * spec * vec3(texture(material.texture_specular1, v_TexturePos));
 
     vec3 result = light.color * (ambient + diffuse + specular);
-    color = vec4(result, 1.0);
+
+    if (!NonTexture)
+    {
+        color = vec4(result, 1.0);
+    }
+    else
+    {
+        color = vec4(0.7, 0.7, 0.7, 1.0);
+    }
 }

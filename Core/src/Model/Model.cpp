@@ -20,7 +20,7 @@ namespace Core {
 	void Model::LoadModel(const std::string& filepath)
 	{
 		Assimp::Importer import;
-		const aiScene* scene = import.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes);
+		const aiScene* scene = import.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_GenSmoothNormals);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
@@ -98,18 +98,21 @@ namespace Core {
 			MeshVertex vertex;
 
 			// Vertex position
-			glm::vec3 posVector(0.0f);
+			glm::vec3 posVector(1.0f);
 			posVector.x = mesh->mVertices[i].x;
 			posVector.y = mesh->mVertices[i].y;
 			posVector.z = mesh->mVertices[i].z;
 			vertex.Position = posVector;
 
 			// Vertex normals
-			glm::vec3 normalVector(0.0f);
-			normalVector.x = mesh->mNormals[i].x;
-			normalVector.y = mesh->mNormals[i].y;
-			normalVector.z = mesh->mNormals[i].z;
-			vertex.Normal = normalVector;
+			if (mesh->HasNormals())
+			{
+				glm::vec3 normalVector(1.0f);
+				normalVector.x = mesh->mNormals[i].x;
+				normalVector.y = mesh->mNormals[i].y;
+				normalVector.z = mesh->mNormals[i].z;
+				vertex.Normal = normalVector;
+			}
 
 			// Texture coordinates
 			if (mesh->mTextureCoords[0])
