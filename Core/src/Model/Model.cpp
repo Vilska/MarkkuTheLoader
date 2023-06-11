@@ -1,5 +1,6 @@
 #include "cpch.h"
 #include "Model.h"
+#include "Renderer/Texture.h"
 
 namespace Core {
 
@@ -31,21 +32,44 @@ namespace Core {
 		ProcessNode(scene->mRootNode, scene);
 	}
 
-	//std::vector<MeshTexture> Model::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const std::string& typeName)
-	//{
-	//	std::vector<MeshTexture> textures;
+	std::vector<MeshTexture> Model::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const std::string& typeName)
+	{
+		std::vector<MeshTexture> textures;
 
-	//	for (int i = 0; i < material->GetTextureCount(type); i++)
-	//	{
-	//		aiString str;
-	//		material->GetTexture(type, i, &str);
-	//		MeshTexture texture;
-	//		//texture.ID = TextureFromFile(str.C_Str(), m_Directory);
-	//		texture.Type = typeName;
-	//		texture.Path = str.C_Str();
-	//		textures.push_back(texture);
-	//	}
-	//}
+		for (int i = 0; i < material->GetTextureCount(type); i++)
+		{
+			aiString str;
+			material->GetTexture(type, i, &str);
+			bool skip = false;
+
+			for (int j = 0; j < m_TexturesLoaded.size(); j++)
+			{
+				if (std::strcmp(m_TexturesLoaded[j].Path.data(), str.C_Str()) == 0)
+				{
+					textures.push_back(m_TexturesLoaded[j]);
+					skip = true;
+					break;
+				}
+			}
+
+			if (!skip)
+			{
+				MeshTexture texture;
+
+				std::string string = str.C_Str();
+				std::string fullpath = m_Directory + "/" + string;
+
+				texture.ID = Texture::Load(string, fullpath);
+				texture.Type = typeName;
+				texture.Path = fullpath;
+				textures.push_back(texture);
+				m_TexturesLoaded.push_back(texture);
+			}
+
+		}
+
+		return textures;
+	}
 
 	void Model::ProcessNode(aiNode* node, const aiScene* scene)
 	{

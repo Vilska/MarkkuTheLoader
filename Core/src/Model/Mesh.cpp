@@ -15,6 +15,28 @@ namespace Core {
 
     void Mesh::Draw()
     {
+        uint32_t diffuseIndex = 1;
+        uint32_t specularIndex = 1;
+
+        Shader::Bind("Model");
+
+        for (int i = 0; i < Textures.size(); i++)
+        {
+            glActiveTexture(GL_TEXTURE0 + i);
+
+            std::string number;
+            std::string name = Textures[i].Type;
+
+            if (name == "texture_diffuse")
+                number = std::to_string(diffuseIndex++);
+            else if (name == "texture_specular")
+                number = std::to_string(specularIndex++);
+
+            Shader::UploadUniform("Model", ("material." + name + number).c_str(), i);
+            glBindTexture(GL_TEXTURE_2D, Textures[i].ID);
+        }
+        glActiveTexture(GL_TEXTURE0);
+
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);

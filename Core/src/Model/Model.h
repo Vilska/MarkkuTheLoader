@@ -25,6 +25,7 @@ namespace Core {
 		Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
 	private:
 		std::vector<Mesh> m_Meshes;
+		std::vector<MeshTexture> m_TexturesLoaded;
 		std::string m_Directory;
 	};
 

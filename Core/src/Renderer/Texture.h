@@ -20,7 +20,7 @@ namespace Core {
 	public:
 		Texture() = default;
 
-		static void Load(const std::string& name, const std::string& filepath);
+		static uint32_t Load(const std::string& name, const std::string& filepath);
 		static void Bind(const std::string& name);
 		static void Delete(const std::string& name);
 	private:

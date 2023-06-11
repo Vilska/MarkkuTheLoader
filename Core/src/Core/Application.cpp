@@ -35,70 +35,70 @@ namespace Core {
 
 		m_Camera = Camera::Create(45.0f, (float)props.Width / (float)props.Height);
 
-		//m_TestModel = std::make_unique<Model>("assets/models/backpack.obj");
-
 		//m_Gui = new GuiLayer();
 		//PushLayer(m_Gui);
 
 		// Test
 		Shader::LoadShaders({"Model", "Light"});
 
+		m_TestModel = std::make_unique<Model>("assets/models/backpack/backpack.obj");
+
 		float vertices[] = {
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f, -0.5f,
+			 0.5f,  0.5f, -0.5f,
+			 0.5f,  0.5f, -0.5f,
+			-0.5f,  0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,
 
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-			 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
-			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+			-0.5f, -0.5f,  0.5f,
+			 0.5f, -0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f,
+			-0.5f, -0.5f,  0.5f,
 
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,
+			-0.5f, -0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f,
 
-			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-			 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-			 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+			 0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f, -0.5f,
+			 0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
 
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-			 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
-			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f,  0.5f,
+			 0.5f, -0.5f,  0.5f,
+			-0.5f, -0.5f,  0.5f,
+			-0.5f, -0.5f, -0.5f,
 
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-			 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
+			-0.5f,  0.5f, -0.5f,
+			 0.5f,  0.5f, -0.5f,
+			 0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f, -0.5f,
 		};
 
-		m_VertexArray = VertexArray::Create();
+		//m_VertexArray = VertexArray::Create();
 
-		m_VertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
-		BufferLayout layout =
-		{
-			{ "a_Position", ShaderDataType::Float3},
-			{ "a_Normal", ShaderDataType::Float3 },
-			{ "a_TexturePos", ShaderDataType::Float2 }
-		};
-		m_VertexBuffer->SetLayout(layout);
+		//m_VertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
+		//BufferLayout layout =
+		//{
+		//	{ "a_Position", ShaderDataType::Float3},
+		//	{ "a_Normal", ShaderDataType::Float3 },
+		//	{ "a_TexturePos", ShaderDataType::Float2 }
+		//};
+		//m_VertexBuffer->SetLayout(layout);
 
-		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
+		//m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
 		// Light
 		m_LightVAO = VertexArray::Create();
@@ -106,22 +106,15 @@ namespace Core {
 		m_LightVBO = VertexBuffer::Create(vertices, sizeof(vertices));
 		BufferLayout lightLayout =
 		{
-			{ "a_Position", ShaderDataType::Float3},
-			{ "a_Normal", ShaderDataType::Float3 },
-			{ "a_TexturePos", ShaderDataType::Float2 }
+			{ "a_Position", ShaderDataType::Float3}
 		};
 		m_LightVBO->SetLayout(lightLayout);
 
 		m_LightVAO->AddVertexBuffer(m_LightVBO);
-
-
 		//uint32_t indices[6] = { 0, 1, 2, 2, 3, 0 };
 
 		//m_IndexBuffer = IndexBuffer::Create(indices, 6);
 		//m_VertexArray->SetIndexBuffer(m_IndexBuffer);
-
-		Texture::Load("Box_diffuse", "assets/textures/box.png");
-		Texture::Load("Box_specular", "assets/textures/box_specular.png");
 	}
 
 	Application::~Application()
@@ -162,20 +155,11 @@ namespace Core {
 			// Model cube
 			Shader::Bind("Model");
 
-			glm::vec3 lightPos = { 1.2f, 2.0f, 2.0f };
-			lightPos.x = 1.0f + sin(glfwGetTime()) * 2.0f;
-			lightPos.y = (sin(glfwGetTime()) / 1.0f) * 2.0f;
+			glm::vec3 lightPos = { 1.2f, 10.0f, 2.0f };
 
 			Shader::UploadUniform("Model", "ViewProjection", m_Camera->GetViewProjectionMatrix());
 			Shader::UploadUniform("Model", "Transform", glm::mat4(1.0f));
-			Shader::UploadUniform("Model", "LightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 			Shader::UploadUniform("Model", "ViewPos", m_Camera->GetPosition());
-
-			Texture::Bind("Box_diffuse");
-			Texture::Bind("Box_specular");
-
-			Shader::UploadUniform("Model", "material.diffuse", 0);
-			Shader::UploadUniform("Model", "material.specular", 1);
 			Shader::UploadUniform("Model", "material.shininess", 32.0f);
 
 			Shader::UploadUniform("Model", "light.position", lightPos);
@@ -183,9 +167,6 @@ namespace Core {
 			Shader::UploadUniform("Model", "light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
 			Shader::UploadUniform("Model", "light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
 			Shader::UploadUniform("Model", "light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-
-			m_VertexArray->Bind();
-			glDrawArrays(GL_TRIANGLES, 0, 36);
 
 			// Light cube
 			Shader::Bind("Light");
@@ -200,7 +181,7 @@ namespace Core {
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 
 			// Test model
-			//m_TestModel->Draw();
+			m_TestModel->Draw();
 
 			m_Window->Update();
 
