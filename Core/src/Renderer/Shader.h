@@ -37,6 +37,8 @@ namespace Core {
 		}
 	private:
 		std::string ReadFile(const std::string& filepath);
+		void CheckCompilationStatus(uint32_t shader);
+		void CheckLinkingStatus(uint32_t program);
 
 		void UploadUniformImpl(uint32_t program, const std::string& name, int value);
 		void UploadUniformImpl(uint32_t program, const std::string& name, float value);

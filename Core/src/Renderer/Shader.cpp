@@ -41,6 +41,7 @@ namespace Core {
 
 			// Compile shader to machine code
 			glCompileShader(vertexShader);
+			s_Instance->CheckCompilationStatus(vertexShader);
 
 			// Fragment shader
 			GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -53,6 +54,7 @@ namespace Core {
 			glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
 
 			glCompileShader(fragmentShader);
+			s_Instance->CheckCompilationStatus(fragmentShader);
 
 			// Attach proper shaders to the program
 			glAttachShader(shaderPack.Program, vertexShader);
@@ -60,6 +62,7 @@ namespace Core {
 
 			// Link all together
 			glLinkProgram(shaderPack.Program);
+			s_Instance->CheckLinkingStatus(shaderPack.Program);
 
 			// Delete shaders
 			glDetachShader(shaderPack.Program, vertexShader);
@@ -101,6 +104,42 @@ namespace Core {
 		in.read(&result[0], size);
 
 		return result;
+	}
+
+	void Shader::CheckCompilationStatus(uint32_t shader)
+	{
+		GLint success = 0;
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+
+		if (success)
+			return;
+
+		GLint maxLength = 0;
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
+		std::vector<GLchar> infoLog(maxLength);
+		glGetShaderInfoLog(shader, maxLength, &maxLength, &infoLog[0]);
+
+		glDeleteShader(shader);
+
+		LOG_ERROR("Shader compilation failed: {0}", infoLog.data());
+	}
+
+	void Shader::CheckLinkingStatus(uint32_t program)
+	{
+		GLint success = 0;
+		glGetProgramiv(program, GL_LINK_STATUS, &success);
+
+		if (success)
+			return;
+
+		GLint maxLength = 0;
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
+		std::vector<GLchar> infoLog(maxLength);
+		glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
+
+		glDeleteProgram(program);
+
+		LOG_ERROR("Shader linking failed: {0}", infoLog.data());
 	}
 
 	void Shader::UploadUniformImpl(uint32_t program, const std::string& name, int value)

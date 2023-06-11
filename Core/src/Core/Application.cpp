@@ -33,7 +33,7 @@ namespace Core {
 		m_Window = Window::Create({ props.Label, props.Width, props.Height});
 		m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 
-		m_Camera = Camera::Create(45.0f, props.Width / props.Height);
+		m_Camera = Camera::Create(45.0f, (float)props.Width / (float)props.Height);
 
 		//m_TestModel = std::make_unique<Model>("assets/models/backpack.obj");
 
@@ -44,47 +44,47 @@ namespace Core {
 		Shader::LoadShaders({"Model", "Light"});
 
 		float vertices[] = {
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
 
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-			 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+			 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
 
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-			 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-			 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+			 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-			 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+			 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
 
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-			 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+			 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 		};
 
 		m_VertexArray = VertexArray::Create();
@@ -93,7 +93,8 @@ namespace Core {
 		BufferLayout layout =
 		{
 			{ "a_Position", ShaderDataType::Float3},
-			{ "a_Normal", ShaderDataType::Float3 }
+			{ "a_Normal", ShaderDataType::Float3 },
+			{ "a_TexturePos", ShaderDataType::Float2 }
 		};
 		m_VertexBuffer->SetLayout(layout);
 
@@ -106,7 +107,8 @@ namespace Core {
 		BufferLayout lightLayout =
 		{
 			{ "a_Position", ShaderDataType::Float3},
-			{ "a_Normal", ShaderDataType::Float3 }
+			{ "a_Normal", ShaderDataType::Float3 },
+			{ "a_TexturePos", ShaderDataType::Float2 }
 		};
 		m_LightVBO->SetLayout(lightLayout);
 
@@ -118,8 +120,8 @@ namespace Core {
 		//m_IndexBuffer = IndexBuffer::Create(indices, 6);
 		//m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
-		//m_Texture = Texture::Create("assets/textures/box.jpg");
-		//m_OverlayTexture = Texture::Create("assets/textures/stop.png");
+		m_DiffuseMap = Texture::Create("assets/textures/box.png");
+		m_SpecularMap = Texture::Create("assets/textures/box_specular.png");
 	}
 
 	Application::~Application()
@@ -166,9 +168,20 @@ namespace Core {
 
 			Shader::UploadUniform("Model", "ViewProjection", m_Camera->GetViewProjectionMatrix());
 			Shader::UploadUniform("Model", "Transform", glm::mat4(1.0f));
-			Shader::UploadUniform("Model", "LightPos", lightPos);
 			Shader::UploadUniform("Model", "LightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 			Shader::UploadUniform("Model", "ViewPos", m_Camera->GetPosition());
+
+			m_DiffuseMap->Bind(0);
+			m_SpecularMap->Bind(1);
+			Shader::UploadUniform("Model", "material.diffuse", 0);
+			Shader::UploadUniform("Model", "material.specular", 1);
+			Shader::UploadUniform("Model", "material.shininess", 32.0f);
+
+			Shader::UploadUniform("Model", "light.position", lightPos);
+			Shader::UploadUniform("Model", "light.color", glm::vec3(1.0f, 1.0f, 1.0f));
+			Shader::UploadUniform("Model", "light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+			Shader::UploadUniform("Model", "light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+			Shader::UploadUniform("Model", "light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
 			m_VertexArray->Bind();
 			glDrawArrays(GL_TRIANGLES, 0, 36);
