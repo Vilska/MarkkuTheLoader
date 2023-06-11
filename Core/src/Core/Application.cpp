@@ -120,8 +120,8 @@ namespace Core {
 		//m_IndexBuffer = IndexBuffer::Create(indices, 6);
 		//m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
-		m_DiffuseMap = Texture::Create("assets/textures/box.png");
-		m_SpecularMap = Texture::Create("assets/textures/box_specular.png");
+		Texture::Load("Box_diffuse", "assets/textures/box.png");
+		Texture::Load("Box_specular", "assets/textures/box_specular.png");
 	}
 
 	Application::~Application()
@@ -171,8 +171,9 @@ namespace Core {
 			Shader::UploadUniform("Model", "LightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 			Shader::UploadUniform("Model", "ViewPos", m_Camera->GetPosition());
 
-			m_DiffuseMap->Bind(0);
-			m_SpecularMap->Bind(1);
+			Texture::Bind("Box_diffuse");
+			Texture::Bind("Box_specular");
+
 			Shader::UploadUniform("Model", "material.diffuse", 0);
 			Shader::UploadUniform("Model", "material.specular", 1);
 			Shader::UploadUniform("Model", "material.shininess", 32.0f);

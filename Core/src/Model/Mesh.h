@@ -18,6 +18,7 @@ namespace Core {
 	{
 		uint32_t ID;
 		std::string Type;
+		std::string Path;
 	};
 
 	class Mesh
@@ -31,7 +32,7 @@ namespace Core {
 
 		void Draw();
 	private:
-		uint32_t VAO, VBO, EBO;
+		uint32_t VAO, VBO, IBO;
 
 		void SetupMesh();
 	};

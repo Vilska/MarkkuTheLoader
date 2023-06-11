@@ -24,14 +24,14 @@ namespace Core {
 	{
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
+        glGenBuffers(1, &IBO);
 
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
         glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(MeshVertex), &Vertices[0], GL_STATIC_DRAW);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indices.size() * sizeof(unsigned int), &Indices[0], GL_STATIC_DRAW);
 
         // vertex positions

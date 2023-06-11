@@ -6,23 +6,27 @@
 
 namespace Core {
 
+	struct TextureData
+	{
+		std::string Name;
+		uint32_t ID;
+
+		TextureData(const std::string& name, uint32_t id)
+			: Name(name), ID(id) {}
+	};
+
 	class Texture
 	{
 	public:
-		Texture(const std::string& filepath);
-		~Texture();
+		Texture() = default;
 
-		void Bind(int textureID);
-
-		std::tuple<uint16_t, uint16_t> GetSize() const { return { m_Width, m_Height }; }
-
-		static std::unique_ptr<Texture> Create(const std::string& filepath);
+		static void Load(const std::string& name, const std::string& filepath);
+		static void Bind(const std::string& name);
+		static void Delete(const std::string& name);
 	private:
-		int OpenGLTextureInt(int value);
-	private:
-		std::string m_Path;
-		uint16_t m_Width, m_Height;
-		uint32_t m_Texture;
+		std::vector<TextureData> m_Textures;
+
+		static std::unique_ptr<Texture> s_Instance;
 	};
 
 }

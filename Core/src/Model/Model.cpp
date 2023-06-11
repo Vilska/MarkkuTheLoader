@@ -31,6 +31,22 @@ namespace Core {
 		ProcessNode(scene->mRootNode, scene);
 	}
 
+	//std::vector<MeshTexture> Model::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const std::string& typeName)
+	//{
+	//	std::vector<MeshTexture> textures;
+
+	//	for (int i = 0; i < material->GetTextureCount(type); i++)
+	//	{
+	//		aiString str;
+	//		material->GetTexture(type, i, &str);
+	//		MeshTexture texture;
+	//		//texture.ID = TextureFromFile(str.C_Str(), m_Directory);
+	//		texture.Type = typeName;
+	//		texture.Path = str.C_Str();
+	//		textures.push_back(texture);
+	//	}
+	//}
+
 	void Model::ProcessNode(aiNode* node, const aiScene* scene)
 	{
 		for (int i = 0; i < node->mNumMeshes; i++)
@@ -96,11 +112,16 @@ namespace Core {
 			}
 		}
 
-		// Process materials TODO
-		//if (mesh->mMaterialIndex >= 0)
-		//{
-		//	
-		//}
+		// Process materials
+		if (mesh->mMaterialIndex >= 0)
+		{
+			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+			std::vector<MeshTexture> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+			
+			std::vector<MeshTexture> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+		}
 
 		return Mesh(vertices, indices, textures);
 	}
