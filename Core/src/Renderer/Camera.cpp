@@ -8,13 +8,18 @@
 
 namespace Core {
 
+	Camera* Camera::s_Instance = nullptr;
+
 	std::unique_ptr<Camera> Camera::Create(float fov, float aspectRatio)
 	{
 		return std::make_unique<Camera>(fov, aspectRatio);
 	}
 
 	Camera::Camera(float fov, float aspectRatio)
-		: m_FOV(fov), m_AspectRatio(aspectRatio) {}
+		: m_FOV(fov), m_AspectRatio(aspectRatio) 
+	{
+		s_Instance = this;
+	}
 
 	void Camera::Update(float deltaTime)
 	{

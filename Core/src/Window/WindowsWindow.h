@@ -12,7 +12,6 @@ namespace Core {
 		WindowsWindow(const WindowProps& props);
 		virtual ~WindowsWindow() override;
 
-		virtual void Clear() override;
 		virtual void Update() override;
 
 		virtual uint16_t GetWidth() const override { return m_Data.Width; };

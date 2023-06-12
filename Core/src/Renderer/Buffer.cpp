@@ -59,6 +59,7 @@ namespace Core {
 	}
 
 	IndexBuffer::IndexBuffer(const void* indices, uint32_t size)
+		: m_Count(size / 32) 
 	{
 		glGenBuffers(1, &m_IndexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);

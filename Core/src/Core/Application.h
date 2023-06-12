@@ -37,6 +37,7 @@ namespace Core {
 		void OnEvent(Event& event);
 		void PushLayer(Layer* layer);
 
+		static float GetTime();
 		static Application& Get() { return *s_Instance; }
 		Window& GetWindow() { return *m_Window; }
 	private:

@@ -107,8 +107,11 @@ namespace Core {
 
 		void Bind();
 
+		uint32_t GetCount() const { return m_Count; }
+
 		static std::shared_ptr<IndexBuffer> Create(const void* indices, uint32_t size);
 	private:
+		uint32_t m_Count;
 		uint32_t m_IndexBuffer;
 	};
 

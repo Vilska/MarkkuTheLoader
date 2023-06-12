@@ -25,7 +25,6 @@ namespace Core {
 
 		virtual ~Window() = default;
 
-		virtual void Clear() = 0;
 		virtual void Update() = 0;
 
 		virtual uint16_t GetWidth() const = 0;
