@@ -15,6 +15,7 @@ namespace Core {
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
 		virtual void Update() {}
+		virtual void OnEvent(Event& e) {}
 		virtual void OnGuiRender() {}
 	};
 

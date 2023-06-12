@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #include "Buffer.h"
 #include "VertexArray.h"

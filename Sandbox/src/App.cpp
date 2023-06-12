@@ -10,10 +10,10 @@ public:
 	ExampleLayer() = default;
 	virtual ~ExampleLayer() = default;
 
-	//std::unique_ptr<Framebuffer> FBO;
-
 	virtual void OnAttach()
 	{
+		m_Framebuffer = Framebuffer::Create({ 1280, 720 });
+
 		Shader::LoadShaders({ "Model", "Light" });
 
 		float vertices[] = {
@@ -65,15 +65,13 @@ public:
 			{ "a_Position", ShaderDataType::Float3}
 		};
 
-		//FBO = Framebuffer::Create({ 1280, 720 });
-
 		Renderer::AddShape("LightCube", "Light", vertices, sizeof(vertices), bufferLayout, glm::mat4(1.0f));
+		m_Model = std::make_unique<Model>("assets/models/backpack/backpack.obj"); // Model::Load(path) TODO
 	}
 
 	virtual void Update() override
 	{
-		//FBO->Bind();
-		//FBO->Unbind();
+		m_Framebuffer->Bind();
 
 		Renderer::BeginScene();
 
@@ -81,26 +79,29 @@ public:
 		lightPos.x *= cos(Application::GetTime());
 		lightPos.z *= sin(Application::GetTime());
 
-		// Model stuff
-		//Shader::UploadUniform("Model", "ViewProjection", m_Camera->GetViewProjectionMatrix());
-		//Shader::UploadUniform("Model", "Transform", glm::mat4(1.0f));
-		//Shader::UploadUniform("Model", "ViewPos", m_Camera->GetPosition());
-		//Shader::UploadUniform("Model", "material.shininess", 32.0f);
+		Shader::UploadUniform("Model", "ViewProjection", Camera::GetViewProjectionMatrix());
+		Shader::UploadUniform("Model", "Transform", glm::mat4(1.0f));
+		Shader::UploadUniform("Model", "material.shininess", 32.0f);
 
-		Shader::UploadUniform("Model", "light.position", lightPos);
-		Shader::UploadUniform("Model", "light.color", glm::vec3(1.0f, 1.0f, 1.0f));
-		Shader::UploadUniform("Model", "light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
-		Shader::UploadUniform("Model", "light.diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
-		Shader::UploadUniform("Model", "light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		Lighting::SetLight("Model",
+		{
+			lightPos,
+			glm::vec3(1.0f, 1.0f, 1.0f),
+			glm::vec3(0.2f, 0.2f, 0.2f),
+			glm::vec3(0.5f, 0.5f, 0.5f),
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		});
 
 		glm::mat4 transform(1.0f);
 		transform = glm::translate(transform, lightPos);
 		transform = glm::scale(transform, glm::vec3(0.2f));
-
 		Renderer::UpdateShapeTransform("LightCube", transform);
+
 		Renderer::Draw();
+		m_Model->Draw();
 
 		Renderer::EndScene();
+		m_Framebuffer->Unbind();
 	}
 
 	virtual void OnGuiRender() override
@@ -149,15 +150,38 @@ public:
 		ImGui::End();
 
 		ImGui::Begin("Viewport", (bool*)true, subWindowFlags);
-		// TODO
-		//uint32_t textureID = FBO->GetColorAttachmentRendererID();
-		//ImGui::Image((void*)textureID, ImVec2{ 1280, 720 }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+		ImVec2 size = ImGui::GetContentRegionAvail();
+		
+		static bool firstTime = true;
+		if (m_ViewportSize != *((glm::vec2*)&size))
+		{
+			if (firstTime)
+			{
+				m_ViewportSize = { size.x, size.y };
+				firstTime = false;
+			}
+			else
+			{
+				m_Framebuffer->Resize((uint32_t)size.x, (uint32_t)size.y);
+				m_ViewportSize = { size.x, size.y };
+			}
+
+		}
+
+		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 		ImGui::End();
 
 		// End main window
 		ImGui::End();
 		ImGui::PopStyleVar();
 	}
+private:
+	glm::vec2 m_ViewportSize;
+
+	std::unique_ptr<Model> m_Model;
+	std::unique_ptr<Framebuffer> m_Framebuffer;
 };
 
 class App : public Application

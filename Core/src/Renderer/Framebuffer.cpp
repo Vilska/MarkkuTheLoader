@@ -3,6 +3,8 @@
 
 #include "glad/glad.h"
 
+#include "Camera.h"
+
 namespace Core {
 
 	std::unique_ptr<Framebuffer> Framebuffer::Create(const FramebufferData& data)
@@ -20,7 +22,7 @@ namespace Core {
 	{
 		glDeleteFramebuffers(1, &m_RendererID);
 		glDeleteTextures(1, &m_ColorAttachment);
-		glDeleteTextures(1, &m_DepthAttachment);
+		glDeleteRenderbuffers(1, &m_DepthAttachment);
 	}
 
 	void Framebuffer::Invalidate()
@@ -69,6 +71,11 @@ namespace Core {
 		m_Data.Width = width;
 		m_Data.Height = height;
 
-		Invalidate();
+		Camera::SetAspectRatio((float)width / (float)height);
+
+		glBindTexture(GL_TEXTURE_2D, m_ColorAttachment);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Data.Width, m_Data.Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glBindRenderbuffer(GL_RENDERBUFFER, m_DepthAttachment);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Data.Width, m_Data.Height);
 	}
 }

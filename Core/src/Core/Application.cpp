@@ -65,7 +65,7 @@ namespace Core {
 			m_Gui->Begin();
 			for (auto& layer : m_Layers)
 			{
-				//layer->OnGuiRender();
+				layer->OnGuiRender();
 			}
 			m_Gui->End();
 
@@ -80,6 +80,9 @@ namespace Core {
 		dispatcher.Dispatch<WindowCloseEvent>(std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
 
 		m_Camera->OnEvent(event);
+
+		for (auto& layer : m_Layers)
+			layer->OnEvent(event);
 	}
 
 	void Application::PushLayer(Layer* layer)
