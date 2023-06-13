@@ -56,7 +56,7 @@ namespace Core {
 			if (texture.Name != name)
 				continue;
 
-			glActiveTexture(GL_TEXTURE0 + texture.ID - 2);
+			glActiveTexture(GL_TEXTURE0 + texture.ID - 3);
 			glBindTexture(GL_TEXTURE_2D, texture.ID);
 		}
 	}

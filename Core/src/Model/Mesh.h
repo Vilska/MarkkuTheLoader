@@ -30,6 +30,8 @@ namespace Core {
 		Mesh(std::vector<MeshVertex> vertices, std::vector<uint32_t> indices, std::vector<MeshTexture> textures);
 
 		void Draw();
+
+		std::vector<MeshTexture> GetTextures() const { return m_Textures; }
 	private:
 		void SetupMesh();
 	private:

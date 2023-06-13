@@ -2,6 +2,8 @@
 
 #include "Core.h"
 
+#include "SettingsPanel.h"
+
 using namespace Core;
 
 class ExampleLayer : public Layer
@@ -66,7 +68,6 @@ public:
 		};
 
 		Renderer::AddShape("LightCube", "Light", vertices, sizeof(vertices), bufferLayout, glm::mat4(1.0f));
-		m_Model = std::make_unique<Model>("assets/models/backpack/backpack.obj"); // Model::Load(path) TODO
 	}
 
 	virtual void Update() override
@@ -75,30 +76,33 @@ public:
 
 		Renderer::BeginScene();
 
-		glm::vec3 lightPos = { 3.0f, 5.0f, 3.0f };
-		lightPos.x *= cos(Application::GetTime());
-		lightPos.z *= sin(Application::GetTime());
-
+		// Update model's uniforms
 		Shader::UploadUniform("Model", "ViewProjection", Camera::GetViewProjectionMatrix());
-		Shader::UploadUniform("Model", "Transform", glm::mat4(1.0f));
+
+		glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), m_ModelRotation.x, { 1, 0, 0 })
+			* glm::rotate(glm::mat4(1.0f), m_ModelRotation.y, { 0, 1, 0 })
+			* glm::rotate(glm::mat4(1.0f), m_ModelRotation.z, { 0, 0, 1 });
+		glm::mat4 modelTransform = glm::translate(glm::mat4(1.0f), m_ModelPos) * rotation * glm::scale(glm::mat4(1.0f), m_ModelScale);
+
+		Shader::UploadUniform("Model", "Transform", modelTransform);
 		Shader::UploadUniform("Model", "material.shininess", 32.0f);
 
+		// Update light's uniforms
 		Lighting::SetLight("Model",
 		{
-			lightPos,
+			m_LightPos,
 			glm::vec3(1.0f, 1.0f, 1.0f),
 			glm::vec3(0.2f, 0.2f, 0.2f),
 			glm::vec3(0.5f, 0.5f, 0.5f),
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		});
 
-		glm::mat4 transform(1.0f);
-		transform = glm::translate(transform, lightPos);
-		transform = glm::scale(transform, glm::vec3(0.2f));
-		Renderer::UpdateShapeTransform("LightCube", transform);
+		glm::mat4 lightTransform = glm::translate(glm::mat4(1.0f), m_LightPos) * glm::scale(glm::mat4(1.0f), glm::vec3(0.2f));
+		Renderer::UpdateShapeTransform("LightCube", lightTransform);
 
+		// Draw
 		Renderer::Draw();
-		m_Model->Draw();
+		Model::Draw();
 
 		Renderer::EndScene();
 		m_Framebuffer->Unbind();
@@ -106,30 +110,22 @@ public:
 
 	virtual void OnGuiRender() override
 	{
-		// Main window flags
-		//ImGuiWindowFlags windowFlags =
-		//	ImGuiWindowFlags_MenuBar |
-		//	ImGuiWindowFlags_NoDocking |
-		//	ImGuiWindowFlags_NoTitleBar |
-		//	ImGuiWindowFlags_NoCollapse |
-		//	ImGuiWindowFlags_NoResize |
-		//	ImGuiWindowFlags_NoMove |
-		//	ImGuiWindowFlags_NoBringToFrontOnFocus |
-		//	ImGuiWindowFlags_NoNavFocus;
-
-		//ImGuiWindowFlags subWindowFlags = 
-		//	ImGuiWindowFlags_NoMove |
-		//	ImGuiWindowFlags_NoScrollbar |
-		//	ImGuiWindowFlags_NoScrollWithMouse |
-		//	ImGuiWindowFlags_NoTitleBar |
-		//	ImGuiWindowFlags_NoCollapse;
-
+		// Window flags
 		ImGuiWindowFlags windowFlags =
-			ImGuiWindowFlags_MenuBar;
+			ImGuiWindowFlags_NoDocking |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoBringToFrontOnFocus |
+			ImGuiWindowFlags_NoNavFocus;
 
-		ImGuiWindowFlags subWindowFlags =
+		ImGuiWindowFlags subWindowFlags = 
+			ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_NoScrollbar |
-			ImGuiWindowFlags_NoScrollWithMouse;
+			ImGuiWindowFlags_NoScrollWithMouse |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoCollapse;
 
 		// Main window configs
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -138,21 +134,62 @@ public:
 		ImGui::SetNextWindowViewport(viewport->ID);
 
 		// Create main window for dockspace
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 10, 10 });
 		ImGui::Begin("Dockspace demo", (bool*)true, windowFlags);
 
 		// Crate dockspace
 		ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_NoResize);
+		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_NoResize | ImGuiDockNodeFlags_AutoHideTabBar);
 
+		// Properties
 		ImGui::Begin("Properties", (bool*)true, subWindowFlags);
-		ImGui::Text("This is a properties panel!");
+
+		// Model settings
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 20 });
+		ImGui::PushTextWrapPos(350.0f);
+		ImGui::TextWrapped("MarkkuTheLoader - 3D Model loader. Load model by typing its name (ex. dog.obj). Keep in mind that .mtl file and correct texture files have to be in the same folder. You can play around with model and light transform in this panel.");
+		ImGui::PopTextWrapPos();
+		ImGui::PopStyleVar();
+
+		bool modelLoadRequested = false;
+		std::string modelPath = "";
+		SettingsPanel::DrawModelBrowser(modelLoadRequested, modelPath);
+
+		if (modelLoadRequested)
+		{
+			Model::Load(modelPath);
+		}
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 5 });
+		ImGui::Text("Model settings:");
+		ImGui::PopStyleVar();
+
+		SettingsPanel::DrawVec3Control("Position (M)", m_ModelPos);
+
+		glm::vec3 rotation = glm::degrees(m_ModelRotation);
+		SettingsPanel::DrawVec3Control("Rotation (M)", rotation);
+		m_ModelRotation = glm::radians(rotation);
+		SettingsPanel::DrawVec3Control("Scale (M)", m_ModelScale, 1.0f);
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 20 });
+		ImGui::Text("");
+		ImGui::PopStyleVar();
+
+		// Light settings
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 5 });
+		ImGui::Text("Light settings:");
+		ImGui::PopStyleVar();
+
+		SettingsPanel::DrawVec3Control("Position (L)", m_LightPos, 1.0f);
+
 		ImGui::End();
 
+		// Viewport
 		ImGui::Begin("Viewport", (bool*)true, subWindowFlags);
 
 		ImVec2 size = ImGui::GetContentRegionAvail();
 		
+		// Resizing
 		static bool firstTime = true;
 		if (m_ViewportSize != *((glm::vec2*)&size))
 		{
@@ -166,7 +203,6 @@ public:
 				m_Framebuffer->Resize((uint32_t)size.x, (uint32_t)size.y);
 				m_ViewportSize = { size.x, size.y };
 			}
-
 		}
 
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
@@ -182,6 +218,12 @@ private:
 
 	std::unique_ptr<Model> m_Model;
 	std::unique_ptr<Framebuffer> m_Framebuffer;
+
+	glm::vec3 m_ModelPos = glm::vec3(0.0f);
+	glm::vec3 m_ModelRotation = glm::vec3(0.0f);
+	glm::vec3 m_ModelScale = glm::vec3(1.0f);
+
+	glm::vec3 m_LightPos = glm::vec3(0.0f);
 };
 
 class App : public Application

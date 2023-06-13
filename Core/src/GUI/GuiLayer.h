@@ -15,6 +15,8 @@ namespace Core {
 
 		void Begin();
 		void End();
+	private:
+		void SetDarkThemeColors();
 	};
 
 }

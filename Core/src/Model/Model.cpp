@@ -4,14 +4,31 @@
 
 namespace Core {
 
-	Model::Model(const std::string& filepath)
+	std::unique_ptr<Model> Model::s_Instance = std::make_unique<Model>();
+
+	void Model::Load(const std::string& filepath)
 	{
-		LoadModel(filepath);
+		if (!s_Instance->m_Meshes.empty())
+		{
+			// Destroy old textures
+			auto& textures = s_Instance->m_Meshes[0].GetTextures();
+			for (auto& texture : textures)
+			{
+				Texture::Delete(texture.Type);
+			}
+
+			s_Instance->m_Meshes.clear();
+		}
+
+		s_Instance->LoadModel(filepath);
 	}
 
 	void Model::Draw()
 	{
-		for (auto& mesh : m_Meshes)
+		if (s_Instance->m_Meshes.empty())
+			return;
+
+		for (auto& mesh : s_Instance->m_Meshes)
 		{
 			mesh.Draw();
 		}
@@ -28,7 +45,7 @@ namespace Core {
 			return;
 		}
 
-		m_Directory = filepath.substr(0, filepath.find_last_of("/"));
+		m_Directory = filepath.substr(0, filepath.find_last_of("\\"));
 		ProcessNode(scene->mRootNode, scene);
 	}
 

@@ -14,9 +14,10 @@ namespace Core {
 	class Model
 	{
 	public:
-		Model(const std::string& filepath);
+		Model() = default;
 
-		void Draw();
+		static void Load(const std::string& filepath);
+		static void Draw();
 	private:
 		void LoadModel(const std::string& filepath);
 		std::vector<MeshTexture> LoadMaterialTextures(aiMaterial* material, aiTextureType type, const std::string& typeName);
@@ -27,6 +28,8 @@ namespace Core {
 		std::vector<Mesh> m_Meshes;
 		std::vector<MeshTexture> m_TexturesLoaded;
 		std::string m_Directory;
+
+		static std::unique_ptr<Model> s_Instance;
 	};
 
 }

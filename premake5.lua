@@ -1,6 +1,7 @@
 workspace "Markku"
     architecture "x64"
     startproject "Sandbox"
+    cppdialect "C++17"
 
     configurations
     {
