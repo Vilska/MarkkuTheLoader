@@ -6,18 +6,23 @@
 
 using namespace Core;
 
+// Example layer
 class ExampleLayer : public Layer
 {
 public:
+	// Constructor / destructor
 	ExampleLayer() = default;
 	virtual ~ExampleLayer() = default;
 
 	virtual void OnAttach()
 	{
+		// Create framebuffer
 		m_Framebuffer = Framebuffer::Create({ 1280, 720 });
 
+		// Load the shaders
 		Shader::LoadShaders({ "Model", "Light" });
 
+		// Specify vertices for light cube
 		float vertices[] = {
 			-0.5f, -0.5f, -0.5f,
 			 0.5f, -0.5f, -0.5f,
@@ -62,18 +67,22 @@ public:
 			-0.5f,  0.5f, -0.5f,
 		};
 
+		// Specify vertex buffer layout for light cube vertices
 		BufferLayout bufferLayout =
 		{
 			{ "a_Position", ShaderDataType::Float3}
 		};
 
+		// Add the light cube to be drew
 		Renderer::AddShape("LightCube", "Light", vertices, sizeof(vertices), bufferLayout, glm::mat4(1.0f));
 	}
 
 	virtual void Update() override
 	{
+		// Bind the framebuffer
 		m_Framebuffer->Bind();
 
+		// Begin scene by ex. clearing buffers
 		Renderer::BeginScene();
 
 		// Update model's uniforms
@@ -99,8 +108,8 @@ public:
 			glm::vec3(m_LightSpecular)
 		});
 
+		// Update light cube's uniforms
 		glm::mat4 lightTransform = glm::translate(glm::mat4(1.0f), m_LightPos) * glm::scale(glm::mat4(1.0f), glm::vec3(0.2f));
-		//Renderer::UpdateUniforms("LightCube", "Transform", lightTransform);
 		Renderer::UpdateShapeTransform("LightCube", lightTransform);
 		Renderer::UpdateShapeColor("LightCube", lightColor);
 
@@ -108,6 +117,7 @@ public:
 		Renderer::Draw();
 		Model::Draw();
 
+		// End the scene and unbind framebuffer
 		Renderer::EndScene();
 		m_Framebuffer->Unbind();
 	}
@@ -148,13 +158,14 @@ public:
 		// Properties
 		ImGui::Begin("Properties", (bool*)true, subWindowFlags);
 
-		// Model settings
+		// About box
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 20 });
 		ImGui::PushTextWrapPos(350.0f);
-		ImGui::TextWrapped("MarkkuTheLoader - 3D Model loader. Load model by typing its name (ex. dog.obj). Keep in mind that .mtl file and correct texture files have to be in the same folder. You can play around with model and light transform in this panel.");
+		ImGui::TextWrapped("MarkkuTheLoader - 3D Model loader. Click the button below to load a model. Keep in mind that .mtl file and correct texture files have to be in the same folder. You can play around with model and light transform in this panel. You can move in the viewport with WASD and mouse when the middle button is clicked.");
 		ImGui::PopTextWrapPos();
 		ImGui::PopStyleVar();
 
+		// Model loading
 		bool modelLoadRequested = false;
 		std::string modelPath = "";
 		SettingsPanel::DrawModelBrowser(modelLoadRequested, modelPath);
@@ -165,6 +176,7 @@ public:
 			m_ModelInfo = Model::GetModelInfo();
 		}
 
+		// Model settings
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 5 });
 		ImGui::Text("Model settings:");
 		ImGui::PopStyleVar();
@@ -201,6 +213,7 @@ public:
 		ImGui::PopStyleVar();
 
 		// Model info
+		ImGui::Text("Model info:");
 		ImGui::Text("Meshes: %d", m_ModelInfo.MeshCount);
 		ImGui::Text("Vertices: %d", m_ModelInfo.VerticeCount);
 
@@ -214,6 +227,16 @@ public:
 
 		// Viewport
 		ImGui::Begin("Viewport", (bool*)true, subWindowFlags);
+
+		// Calculate FPS
+		int fps = 1 / Application::GetDeltaTime();
+		static int actualFps = 0;
+
+		// To prevent flickering
+		if (fps % 2 == 0)
+			actualFps = fps;
+
+		ImGui::Text("FPS: %d", actualFps);
 
 		ImVec2 size = ImGui::GetContentRegionAvail();
 		
@@ -233,6 +256,7 @@ public:
 			}
 		}
 
+		// ImGui Image with framebuffer attached to it
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 		ImGui::End();

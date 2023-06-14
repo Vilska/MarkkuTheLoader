@@ -1,8 +1,8 @@
 #include "cpch.h"
 #include "Texture.h"
 
-#include <stb_image.h>
-#include <glad/glad.h>
+#include "stb_image.h"
+#include "glad/glad.h"
 
 namespace Core {
 

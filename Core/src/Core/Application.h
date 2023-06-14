@@ -31,26 +31,25 @@ namespace Core {
 
 		void Run();
 		void OnEvent(Event& event);
+		//void PushLayer(Layer* layer);
 		void PushLayer(Layer* layer);
 
 		static float GetTime();
+		static float GetDeltaTime() { return s_Instance->m_DeltaTime; }
 		static Application& Get() { return *s_Instance; }
 		Window& GetWindow() { return *m_Window; }
 	private:
-		bool OnWindowClose(WindowCloseEvent& event) { m_Running = false; return m_Running; }
+		inline bool OnWindowClose(WindowCloseEvent& event) { m_Running = false; return m_Running; }
 	private:
 		bool m_Running = true;
 		float m_DeltaTime = 0;
 
-		// Subclass pointers
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<Camera> m_Camera;
 		GuiLayer* m_Gui;
 
-		// Vectors
-		std::vector<Layer*> m_Layers;
+		std::vector<std::unique_ptr<Layer>> m_Layers;
 
-		// Instance
 		static Application* s_Instance;
 	};
 }

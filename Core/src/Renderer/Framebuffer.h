@@ -8,8 +8,6 @@ namespace Core {
 	{
 		uint32_t Width, Height;
 		uint32_t Samples;
-
-		bool SwapChainTarget = false;
 	};
 
 	class Framebuffer
@@ -25,8 +23,8 @@ namespace Core {
 
 		void Resize(uint32_t width, uint32_t height);
 
-		uint32_t GetColorAttachmentRendererID() { return m_RendererID; }
-		const FramebufferData& GetData() { return m_Data; }
+		inline uint32_t GetColorAttachmentRendererID() { return m_RendererID; }
+		inline const FramebufferData& GetData() { return m_Data; }
 
 		static std::unique_ptr<Framebuffer> Create(const FramebufferData& data);
 	private:

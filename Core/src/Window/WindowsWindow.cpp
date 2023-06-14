@@ -1,8 +1,8 @@
 #include "cpch.h"
 #include "WindowsWindow.h"
 
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
+#include "GLFW/glfw3.h"
+#include "glad/glad.h"
 
 #include "Event/WindowEvent.h"
 #include "Event/KeyEvent.h"
@@ -31,7 +31,6 @@ namespace Core {
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 
-		// Window
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -56,7 +55,7 @@ namespace Core {
 		glEnable(GL_DEPTH_TEST);
 		glViewport(0, 0, m_Data.Width, m_Data.Height);
 
-		// GLFW callbacks
+
 		SetCallbacks();
 	}
 

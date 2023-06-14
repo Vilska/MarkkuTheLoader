@@ -3,11 +3,10 @@
 #include <vector>
 #include <memory>
 
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
 
 namespace Core {
 
-	// Buffer layout
 	enum class ShaderDataType
 	{
 		None = 0,
@@ -44,7 +43,6 @@ namespace Core {
 		return 0;
 	}
 
-	// Element
 	struct BufferElement
 	{
 		std::string Name;
@@ -59,15 +57,14 @@ namespace Core {
 		uint32_t GetComponentCount() const { return ShaderDataTypeSize(Type) / 4; }
 	};
 
-	// Layout
 	class BufferLayout
 	{
 	public:
 		BufferLayout() {}
 		BufferLayout(const std::initializer_list<BufferElement>& elements);
 
-		uint32_t GetStride() const { return m_Stride; }
-		const std::vector<BufferElement>& GetElements() const { return m_Elements; }
+		inline uint32_t GetStride() const { return m_Stride; }
+		inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
 
 		std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
 		std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
@@ -80,7 +77,6 @@ namespace Core {
 		uint32_t m_Stride = 0;
 	};
 
-	// Vertex buffer
 	class VertexBuffer
 	{
 	public:
@@ -89,8 +85,8 @@ namespace Core {
 
 		void Bind();
 
-		const BufferLayout& GetLayout() const { return m_Layout; }
-		void SetLayout(const BufferLayout& layout) { m_Layout = layout; }
+		inline const BufferLayout& GetLayout() const { return m_Layout; }
+		inline void SetLayout(const BufferLayout& layout) { m_Layout = layout; }
 
 		static std::shared_ptr<VertexBuffer> Create(const void* vertices, uint32_t size);
 	private:
@@ -98,7 +94,6 @@ namespace Core {
 		BufferLayout m_Layout;
 	};
 
-	// Index buffer
 	class IndexBuffer
 	{
 	public:
@@ -107,7 +102,7 @@ namespace Core {
 
 		void Bind();
 
-		uint32_t GetCount() const { return m_Count; }
+		inline uint32_t GetCount() const { return m_Count; }
 
 		static std::shared_ptr<IndexBuffer> Create(const void* indices, uint32_t size);
 	private:

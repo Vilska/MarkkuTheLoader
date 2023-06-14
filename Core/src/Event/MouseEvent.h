@@ -10,8 +10,7 @@ namespace Core {
 		MouseMovedEvent(float x, float y)
 			: m_MouseX(x), m_MouseY(y) {}
 
-		inline float GetX() const { return m_MouseX; }
-		inline float GetY() const { return m_MouseY; }
+		inline std::tuple<float, float> GetPos() const { return { m_MouseX, m_MouseY }; }
 
 		std::string ToString() const override
 		{
@@ -32,13 +31,13 @@ namespace Core {
 		MouseScrolledEvent(float xOffset, float yOffset)
 			: m_XOffset(xOffset), m_YOffset(yOffset) {}
 
-		inline float GetXOffset() const { return m_XOffset; }
-		inline float GetYOffset() const { return m_YOffset; }
+		inline std::tuple<float, float> GetOffset() const { return { m_XOffset, m_YOffset }; }
 
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseScrolledEvent: " << GetXOffset() << ", " << GetYOffset();
+			auto [x, y] = GetOffset();
+			ss << "MouseScrolledEvent: " << x << ", " << y;
 			return ss.str();
 		}
 

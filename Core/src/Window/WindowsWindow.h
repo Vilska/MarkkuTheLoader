@@ -2,7 +2,7 @@
 
 #include "Core/Window.h"
 
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 
 namespace Core {
 
@@ -14,9 +14,9 @@ namespace Core {
 
 		virtual void Update() override;
 
-		virtual uint16_t GetWidth() const override { return m_Data.Width; };
-		virtual uint16_t GetHeight() const override { return m_Data.Height; };
-		virtual void* GetNativeWindow() override { return m_Window; }
+		inline virtual uint16_t GetWidth() const override { return m_Data.Width; };
+		inline virtual uint16_t GetHeight() const override { return m_Data.Height; };
+		inline virtual void* GetNativeWindow() override { return m_Window; }
 
 		inline virtual void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 	private:

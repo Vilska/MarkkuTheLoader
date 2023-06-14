@@ -1,7 +1,7 @@
 #include "cpch.h"
 #include "Buffer.h"
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 
 namespace Core {
 

@@ -1,10 +1,10 @@
 #include "cpch.h"
 #include "Camera.h"
 
+#include "glm/gtc/matrix_transform.hpp"
+
 #include "Core/Input.h"
 #include "Event/KeyMouseCodes.h"
-
-#include <glm/gtc/matrix_transform.hpp>
 
 namespace Core {
 
@@ -58,8 +58,8 @@ namespace Core {
 			return 0;
 		}
 
-		float xPos = event.GetX();
-		float yPos = event.GetY();
+		auto [xPos, yPos] = event.GetPos();
+
 		if (m_FirstMouse)
 		{
 			m_LastX = xPos;

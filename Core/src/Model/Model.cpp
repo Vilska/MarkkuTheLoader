@@ -1,5 +1,6 @@
 #include "cpch.h"
 #include "Model.h"
+
 #include "Renderer/Texture.h"
 
 namespace Core {
@@ -10,7 +11,6 @@ namespace Core {
 	{
 		if (!s_Instance->m_Meshes.empty())
 		{
-			// Destroy old textures
 			auto& textures = s_Instance->m_Meshes[0].GetTextures();
 			for (auto& texture : textures)
 			{
@@ -115,19 +115,16 @@ namespace Core {
 		std::vector<uint32_t> indices;
 		std::vector<MeshTexture> textures;
 
-		// Process vertices
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
 			MeshVertex vertex;
 
-			// Vertex position
 			glm::vec3 posVector(1.0f);
 			posVector.x = mesh->mVertices[i].x;
 			posVector.y = mesh->mVertices[i].y;
 			posVector.z = mesh->mVertices[i].z;
 			vertex.Position = posVector;
 
-			// Vertex normals
 			if (mesh->HasNormals())
 			{
 				glm::vec3 normalVector(1.0f);
@@ -137,7 +134,6 @@ namespace Core {
 				vertex.Normal = normalVector;
 			}
 
-			// Texture coordinates
 			if (mesh->mTextureCoords[0])
 			{
 				glm::vec2 textureVector(0.0f);
@@ -153,7 +149,6 @@ namespace Core {
 			vertices.push_back(vertex);
 		}
 
-		// Process indices
 		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 		{
 			aiFace face = mesh->mFaces[i];
@@ -163,7 +158,6 @@ namespace Core {
 			}
 		}
 
-		// Process materials
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];

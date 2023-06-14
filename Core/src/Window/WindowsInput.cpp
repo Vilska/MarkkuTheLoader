@@ -1,8 +1,9 @@
 #include "cpch.h"
 #include "WindowsInput.h"
 
+#include "GLFW/glfw3.h"
+
 #include "Core/Application.h"
-#include <GLFW/glfw3.h>
 
 namespace Core {
 
@@ -22,7 +23,7 @@ namespace Core {
 		return state == GLFW_PRESS;
 	}
 
-	std::pair<float, float> WindowsInput::GetMousePositionImpl()
+	std::tuple<float, float> WindowsInput::GetMousePositionImpl()
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		double xPos, yPos;

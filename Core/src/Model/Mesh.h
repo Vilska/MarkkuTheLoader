@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
 
 #include "Renderer/Buffer.h"
 #include "Renderer/VertexArray.h"
@@ -31,7 +31,7 @@ namespace Core {
 
 		void Draw();
 
-		std::vector<MeshTexture> GetTextures() const { return m_Textures; }
+		inline std::vector<MeshTexture> GetTextures() const { return m_Textures; }
 	private:
 		void SetupMesh();
 	private:

@@ -8,7 +8,6 @@ namespace Core {
 	{
 	public:
 		GuiLayer() = default;
-		~GuiLayer() = default;
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;

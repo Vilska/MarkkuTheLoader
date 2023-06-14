@@ -3,9 +3,9 @@
 #include <string>
 #include <vector>
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
 
 #include "Mesh.h"
 
@@ -25,7 +25,7 @@ namespace Core {
 		static void Load(const std::string& filepath);
 		static void Draw();
 
-		static ModelInfo GetModelInfo() { return s_Instance->m_Info; }
+		inline static ModelInfo GetModelInfo() { return s_Instance->m_Info; }
 	private:
 		void LoadModel(const std::string& filepath);
 		std::vector<MeshTexture> LoadMaterialTextures(aiMaterial* material, aiTextureType type, const std::string& typeName);

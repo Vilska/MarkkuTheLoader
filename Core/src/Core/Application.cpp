@@ -1,29 +1,25 @@
 #include "cpch.h"
 #include "Application.h"
 
+#include "GLFW/glfw3.h"
+#include "glad/glad.h"
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
 #include "Log.h"
 #include "Input.h"
 #include "Time.h"
 
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 namespace Core {
 
-	// Assign instance to nullptr
 	Application* Application::s_Instance = nullptr;
 
-	// Constructor
 	Application::Application(const ApplicationProperties& props)
 	{
-		// Handle application initialization
 		if (!s_Instance)
 		{
-			// Initialize log
 			Log::Init();
 			LOG_INFO("Application initialized!");
 		}
@@ -55,13 +51,11 @@ namespace Core {
 
 			m_Camera->Update(m_DeltaTime);
 
-			// Update layers
 			for (auto& layer : m_Layers)
 			{
 				layer->Update();
 			}
 
-			//Render GUI
 			m_Gui->Begin();
 			for (auto& layer : m_Layers)
 			{

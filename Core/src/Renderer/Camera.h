@@ -1,7 +1,8 @@
 #pragma once
 
 #include <memory>
-#include <glm/glm.hpp>
+
+#include "glm/glm.hpp"
 
 #include "Event/Event.h"
 #include "Event/MouseEvent.h"
@@ -16,14 +17,14 @@ namespace Core {
 		void Update(float deltaTime);
 		void OnEvent(Event& event);
 
-		static glm::vec3& GetPosition() { return s_Instance->m_CameraPosition; }
-		static glm::mat4& GetViewProjectionMatrix() { return s_Instance->m_ViewProjectionMatrix; }
+		inline static glm::vec3& GetPosition() { return s_Instance->m_CameraPosition; }
+		inline static glm::mat4& GetViewProjectionMatrix() { return s_Instance->m_ViewProjectionMatrix; }
 
-		static void SetAspectRatio(float aspectRatio) { s_Instance->m_AspectRatio = aspectRatio; }
+		inline static void SetAspectRatio(float aspectRatio) { s_Instance->m_AspectRatio = aspectRatio; }
 
 		static std::unique_ptr<Camera> Create(float fov, float aspectRatio);
 	private:
-		void RecalculateMatrices();
+		inline void RecalculateMatrices();
 		bool RotateCamera(MouseMovedEvent& event);
 	private:
 		glm::mat4 m_ProjectionMatrix = glm::mat4(1.0f);

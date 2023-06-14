@@ -4,9 +4,9 @@
 #include <fstream>
 #include <sstream>
 
-#include <glad/glad.h>
-#include <glfw/glfw3.h>
-#include <glm/gtc/type_ptr.hpp>
+#include "glad/glad.h"
+#include "glfw/glfw3.h"
+#include "glm/gtc/type_ptr.hpp"
 
 namespace Core {
 
@@ -23,16 +23,13 @@ namespace Core {
 
 		for (int i = 0; i < prefixVector.size(); i++)
 		{
-			// Create each shaderPack own program and assign it to the pack
 			uint32_t shaderProgram = glCreateProgram();
 
 			ShaderPack shaderPack(prefixVector[i], shaderProgram);
 			s_Instance->m_ShaderPacks.push_back(shaderPack);
 
-			//Create vertex shader
 			GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
-			//Specify source and cast it to char*
 			std::stringstream vertexPath;
 			vertexPath << "assets/shaders/" << shaderPack.Name << "VS.glsl";
 
@@ -40,11 +37,9 @@ namespace Core {
 			const char* vertexShaderSource = vertexShaderRaw.c_str();
 			glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 
-			// Compile shader to machine code
 			glCompileShader(vertexShader);
 			s_Instance->CheckCompilationStatus(vertexShader);
 
-			// Fragment shader
 			GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 			std::stringstream fragmentPath;
@@ -57,15 +52,12 @@ namespace Core {
 			glCompileShader(fragmentShader);
 			s_Instance->CheckCompilationStatus(fragmentShader);
 
-			// Attach proper shaders to the program
 			glAttachShader(shaderPack.Program, vertexShader);
 			glAttachShader(shaderPack.Program, fragmentShader);
 
-			// Link all together
 			glLinkProgram(shaderPack.Program);
 			s_Instance->CheckLinkingStatus(shaderPack.Program);
 
-			// Delete shaders
 			glDetachShader(shaderPack.Program, vertexShader);
 			glDetachShader(shaderPack.Program, fragmentShader);
 		}

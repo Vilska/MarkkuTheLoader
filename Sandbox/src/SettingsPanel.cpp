@@ -1,12 +1,8 @@
 #include "SettingsPanel.h"
 
-#include <filesystem>
-
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "imfilebrowser.h"
-
-#include <iostream>
 
 namespace Core {
 
@@ -164,7 +160,6 @@ namespace Core {
 		ImGui::PopStyleVar();
 		ImGui::PopStyleColor(3);
 
-		// File dialog
 		fileDialog.Display();
 
 		if (fileDialog.HasSelected())
