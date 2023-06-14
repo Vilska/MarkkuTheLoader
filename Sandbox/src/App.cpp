@@ -84,21 +84,25 @@ public:
 			* glm::rotate(glm::mat4(1.0f), m_ModelRotation.z, { 0, 0, 1 });
 		glm::mat4 modelTransform = glm::translate(glm::mat4(1.0f), m_ModelPos) * rotation * glm::scale(glm::mat4(1.0f), m_ModelScale);
 
-		Shader::UploadUniform("Model", "Transform", modelTransform);
+ 		Shader::UploadUniform("Model", "Transform", modelTransform);
 		Shader::UploadUniform("Model", "material.shininess", 32.0f);
+
+		glm::vec3 lightColor = m_LightColor / glm::vec3(255);
 
 		// Update light's uniforms
 		Lighting::SetLight("Model",
 		{
 			m_LightPos,
-			glm::vec3(1.0f, 1.0f, 1.0f),
-			glm::vec3(0.2f, 0.2f, 0.2f),
-			glm::vec3(0.5f, 0.5f, 0.5f),
-			glm::vec3(1.0f, 1.0f, 1.0f)
+			lightColor,
+			glm::vec3(m_LightAmbient),
+			glm::vec3(m_LightDiffuse),
+			glm::vec3(m_LightSpecular)
 		});
 
 		glm::mat4 lightTransform = glm::translate(glm::mat4(1.0f), m_LightPos) * glm::scale(glm::mat4(1.0f), glm::vec3(0.2f));
+		//Renderer::UpdateUniforms("LightCube", "Transform", lightTransform);
 		Renderer::UpdateShapeTransform("LightCube", lightTransform);
+		Renderer::UpdateShapeColor("LightCube", lightColor);
 
 		// Draw
 		Renderer::Draw();
@@ -158,6 +162,7 @@ public:
 		if (modelLoadRequested)
 		{
 			Model::Load(modelPath);
+			m_ModelInfo = Model::GetModelInfo();
 		}
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 5 });
@@ -180,7 +185,30 @@ public:
 		ImGui::Text("Light settings:");
 		ImGui::PopStyleVar();
 
-		SettingsPanel::DrawVec3Control("Position (L)", m_LightPos, 1.0f);
+		SettingsPanel::DrawVec3Control("Position (L)", m_LightPos);
+		SettingsPanel::DrawRGBControl("Color", m_LightColor);
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 5 });
+		ImGui::Text("");
+		ImGui::PopStyleVar();
+
+		SettingsPanel::DrawFloatControl("Ambient", m_LightAmbient);
+		SettingsPanel::DrawFloatControl("Diffuse", m_LightDiffuse);
+		SettingsPanel::DrawFloatControl("Specular", m_LightSpecular);
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 20 });
+		ImGui::Text("");
+		ImGui::PopStyleVar();
+
+		// Model info
+		ImGui::Text("Meshes: %d", m_ModelInfo.MeshCount);
+		ImGui::Text("Vertices: %d", m_ModelInfo.VerticeCount);
+
+		ImGui::Text("Textures loaded (%d):", m_ModelInfo.TextureCount.size());
+		for (auto& texture : m_ModelInfo.TextureCount)
+		{
+			ImGui::Text(texture.c_str());
+		}
 
 		ImGui::End();
 
@@ -216,14 +244,18 @@ public:
 private:
 	glm::vec2 m_ViewportSize;
 
-	std::unique_ptr<Model> m_Model;
 	std::unique_ptr<Framebuffer> m_Framebuffer;
 
+	ModelInfo m_ModelInfo;
 	glm::vec3 m_ModelPos = glm::vec3(0.0f);
 	glm::vec3 m_ModelRotation = glm::vec3(0.0f);
 	glm::vec3 m_ModelScale = glm::vec3(1.0f);
 
 	glm::vec3 m_LightPos = glm::vec3(0.0f);
+	glm::vec3 m_LightColor = glm::vec3(255.0f);
+	float m_LightAmbient = 0.2f;
+	float m_LightDiffuse = 0.5f;
+	float m_LightSpecular = 1.0f;
 };
 
 class App : public Application

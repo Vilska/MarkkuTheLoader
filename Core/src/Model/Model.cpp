@@ -18,6 +18,11 @@ namespace Core {
 			}
 
 			s_Instance->m_Meshes.clear();
+			s_Instance->m_TexturesLoaded.clear();
+
+			s_Instance->m_Info.VerticeCount = 0;
+			s_Instance->m_Info.MeshCount = 0;
+			s_Instance->m_Info.TextureCount.clear();
 		}
 
 		s_Instance->LoadModel(filepath);
@@ -82,6 +87,7 @@ namespace Core {
 				texture.Path = fullpath;
 				textures.push_back(texture);
 				m_TexturesLoaded.push_back(texture);
+				m_Info.TextureCount.push_back(typeName);
 			}
 
 		}
@@ -167,6 +173,9 @@ namespace Core {
 			std::vector<MeshTexture> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 		}
+
+		m_Info.VerticeCount += vertices.size();
+		m_Info.MeshCount++;
 
 		return Mesh(vertices, indices, textures);
 	}

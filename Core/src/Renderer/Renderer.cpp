@@ -57,6 +57,17 @@ namespace Core {
 		}
 	}
 
+	void Renderer::UpdateShapeColor(const std::string& name, const glm::vec3& color)
+	{
+		for (auto& shape : s_Instance->m_Shapes)
+		{
+			if (shape.Name != name)
+				continue;
+
+			shape.Color = color;
+		}
+	}
+
 	void Renderer::Draw()
 	{
 		for (auto& shape : s_Instance->m_Shapes)
@@ -64,6 +75,7 @@ namespace Core {
 			Shader::Bind(shape.ShaderName);
 			Shader::UploadUniform(shape.ShaderName, "ViewProjection", s_Instance->m_ViewProjection);
 			Shader::UploadUniform(shape.ShaderName, "Transform", shape.Transform);
+			Shader::UploadUniform(shape.ShaderName, "CubeColor", shape.Color);
 
 			shape.VAO->Bind();
 

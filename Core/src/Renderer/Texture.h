@@ -13,6 +13,11 @@ namespace Core {
 
 		TextureData(const std::string& name, uint32_t id)
 			: Name(name), ID(id) {}
+
+		bool operator == (const TextureData& ltd)
+		{
+			return ltd.Name == Name;
+		}
 	};
 
 	class Texture

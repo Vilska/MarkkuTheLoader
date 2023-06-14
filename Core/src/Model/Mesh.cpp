@@ -35,6 +35,7 @@ namespace Core {
                     number = std::to_string(specularIndex++);
 
                 Shader::UploadUniform("Model", ("material." + name + number).c_str(), i);
+                Shader::UploadUniform("Model", "NonTexture", 0);
             }
         }
         else 

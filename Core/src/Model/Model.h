@@ -11,6 +11,12 @@
 
 namespace Core {
 
+	struct ModelInfo
+	{
+		uint32_t VerticeCount = 0; uint32_t MeshCount = 0;
+		std::vector<std::string> TextureCount;
+	};
+
 	class Model
 	{
 	public:
@@ -18,6 +24,8 @@ namespace Core {
 
 		static void Load(const std::string& filepath);
 		static void Draw();
+
+		static ModelInfo GetModelInfo() { return s_Instance->m_Info; }
 	private:
 		void LoadModel(const std::string& filepath);
 		std::vector<MeshTexture> LoadMaterialTextures(aiMaterial* material, aiTextureType type, const std::string& typeName);
@@ -30,6 +38,8 @@ namespace Core {
 		std::string m_Directory;
 
 		static std::unique_ptr<Model> s_Instance;
+
+		ModelInfo m_Info;
 	};
 
 }

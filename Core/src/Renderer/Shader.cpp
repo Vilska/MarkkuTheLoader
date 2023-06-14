@@ -25,6 +25,7 @@ namespace Core {
 		{
 			// Create each shaderPack own program and assign it to the pack
 			uint32_t shaderProgram = glCreateProgram();
+
 			ShaderPack shaderPack(prefixVector[i], shaderProgram);
 			s_Instance->m_ShaderPacks.push_back(shaderPack);
 

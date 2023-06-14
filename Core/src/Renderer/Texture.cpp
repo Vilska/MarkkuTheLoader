@@ -63,12 +63,14 @@ namespace Core {
 
 	void Texture::Delete(const std::string& name)
 	{
-		for (auto& texture : s_Instance->m_Textures)
+		auto& texVec = s_Instance->m_Textures;
+		for (auto& texture : texVec)
 		{
 			if (texture.Name != name)
 				continue;
 
 			glDeleteTextures(1, &texture.ID);
+			texVec.erase(std::remove(texVec.begin(), texVec.end(), texture), texVec.end());
 		}
 	}
 

@@ -16,6 +16,7 @@ namespace Core {
 		std::string ShaderName;
 		std::shared_ptr<VertexArray> VAO;
 		glm::mat4 Transform;
+		glm::vec3 Color;
 
 		ShapeData(const std::string& name, const std::string& shaderName, const std::shared_ptr<VertexArray>& vao)
 			: Name(name), ShaderName(shaderName), VAO(vao) 
@@ -34,6 +35,8 @@ namespace Core {
 		static void AddShape(const std::string& name, const std::string& shaderName, float* vertices, uint32_t verticesSize, const BufferLayout& bufferLayout, const glm::mat4& transform);
 
 		static void UpdateShapeTransform(const std::string& name, const glm::mat4& transform);
+		static void UpdateShapeColor(const std::string& name, const glm::vec3& color);
+
 		static void Draw();
 	private:
 		glm::mat4 m_ViewProjection;
